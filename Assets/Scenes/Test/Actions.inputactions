@@ -1,0 +1,34 @@
+{
+    "name": "Actions",
+    "maps": [
+        {
+            "name": "Game",
+            "id": "fa81d4ec-6757-4442-a257-3a0d846580cc",
+            "actions": [
+                {
+                    "name": "fire",
+                    "type": "Button",
+                    "id": "8705dd59-0bb6-4df4-a461-6d5ce92d8b07",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d02a2097-555b-4275-8fa1-22fe47debc77",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
