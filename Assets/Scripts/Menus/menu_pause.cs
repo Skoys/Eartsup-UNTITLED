@@ -6,115 +6,196 @@ using UnityEngine.UI;
 
 public class PauseMenuScript : MonoBehaviour
 {
-    private bool pause = false;
-    private int currentMenu = 0;
+    private bool _pause = false;
+    private int _currentMenu = 0;
 
-    [SerializeField] private GameObject pauseScreen;
-    [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject _pauseScreen;
+    [SerializeField] private GameObject _settingsMenu;
+    [SerializeField] private GameObject _minimapImage;
+    [SerializeField] private GameObject _mapImage;
+    [SerializeField] private GameObject _gameOverScreen;
+    [SerializeField] private GameObject _crosshair;
 
-    [SerializeField] private player_main player;
+    [SerializeField] private Player_main _player;
 
-    private Graphic[] pauseObjects;
-    private Graphic[] settingsObjects;
+    [SerializeField] private string _menuSceneName;
 
-    [SerializeField] string menuSceneName;
+    [Header("Debug")]
+    [SerializeField] private Graphic[] _pauseObjects;
+    [SerializeField]private Graphic[] _settingsObjects;
+    [SerializeField] private Graphic[] _minimapObjects;
+    [SerializeField] private Graphic[] _mapObjects;
+    [SerializeField] private Graphic[] _gameOverObjects;
 
-    void Start()
+    void Awake()
     {
-        pause = false;
+        _pause = false;
 
-        pauseObjects = pauseScreen.GetComponentsInChildren<Graphic>();
-        settingsObjects = settingsMenu.GetComponentsInChildren<Graphic>();
+        _pauseObjects = _pauseScreen.GetComponentsInChildren<Graphic>();
+        _settingsObjects = _settingsMenu.GetComponentsInChildren<Graphic>();
+        _minimapObjects = _minimapImage.GetComponentsInChildren<Graphic>();
+        _mapObjects = _mapImage.GetComponentsInChildren<Graphic>();
+        _gameOverObjects = _gameOverScreen.GetComponentsInChildren<Graphic>();
 
-        player = gameObject.GetComponent<player_main>();
+        _player = gameObject.GetComponent<Player_main>();
 
-        IsPauseShown(false);
-        IsParametersShown(false);
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(true, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        IsParameterShown(false, _gameOverObjects);
+        _crosshair.SetActive(true);
+
+        Time.timeScale = 1;
+
+        GameObject[] Respawns = GameObject.FindGameObjectsWithTag(gameObject.tag);
+        if (Respawns.Length > 1) { Destroy(gameObject); }
     }
 
     public void EscapeKey()
     {
-        if (!pause) 
+        if (!_pause) 
         { 
             PauseGame(true); 
-            currentMenu = 0;
-            IsPauseShown(true);
-            IsParametersShown(false);
-            player.isCinematic = true;
-            player.moveToward = player.transform;
+            _currentMenu = 0;
+            IsParameterShown(true, _pauseObjects);
+            IsParameterShown(false, _settingsObjects);
+            IsParameterShown(false, _minimapObjects);
+            IsParameterShown(false, _mapObjects);
+            _player.isInCinematic = true;
+            _player.moveToward = _player.transform;
         }
         else
         {
-            if (currentMenu == 0) 
+            if (_currentMenu == 0) 
             { 
-                PauseGame(false); 
-                IsPauseShown(false);
-                IsParametersShown(false);
-                player.isCinematic = false;
+                PauseGame(false);
+                IsParameterShown(false, _pauseObjects);
+                IsParameterShown(false, _settingsObjects);
+                IsParameterShown(true, _minimapObjects);
+                IsParameterShown(false, _mapObjects);
+                _player.isInCinematic = false;
             }
-            else
+            else if (_currentMenu == 1)
             {
-                IsPauseShown(true);
-                IsParametersShown(false);
-                currentMenu = 0;
+                IsParameterShown(true, _pauseObjects);
+                IsParameterShown(false, _settingsObjects);
+                IsParameterShown(false, _minimapObjects);
+                IsParameterShown(false, _mapObjects);
+                _currentMenu = 0;
             }
         }
     }
 
-
-    public void pauseResumeClick()
+    public void MapKey(bool isPressed)
     {
-        IsPauseShown(false);
-        IsParametersShown(false);
-        player.isCinematic = false;
+        if (!_pause && isPressed)
+        {
+            IsParameterShown(false, _minimapObjects);
+            IsParameterShown(true, _mapObjects);
+        }
+        else
+        {
+            IsParameterShown(true, _minimapObjects);
+            IsParameterShown(false, _mapObjects);
+        }
+    }
+
+    public void PauseResumeClick()
+    {
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(true, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        _player.isInCinematic = false;
         PauseGame(false);
     }
-    public void pauseSettingsClick()
+    public void PauseSettingsClick()
     {
-        IsPauseShown(false);
-        IsParametersShown(true);
-        currentMenu = 1;
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(true, _settingsObjects);
+        IsParameterShown(false, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        _currentMenu = 1;
     }
-    public void pauseMainMenuClick()
+    public void PauseMainMenuClick()
     {
-        IsPauseShown(false);
-        IsParametersShown(false);
+        LoadMenu();
+    }
+    public void SettingsResumeClick()
+    {
+        IsParameterShown(true, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(false, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        _currentMenu = 0;
+    }
+    public void GameOver()
+    {
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(false, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        IsParameterShown(true, _gameOverObjects);
+        _currentMenu = 2;
+        PauseGame(true);
+    }
+    public void GameOverRetryClick()
+    {
         LoadGame();
     }
-    public void settingsResumeClick()
+    public void GameOverMenuClick()
     {
-        IsPauseShown(true);
-        IsParametersShown(false);
-        currentMenu = 0;
+        LoadMenu();
     }
 
-
-    private void IsPauseShown(bool isShown)
+    private void IsParameterShown(bool isShown, Graphic[] _parametersObjects)
     {
-        foreach (Graphic obj in pauseObjects) { obj.gameObject.SetActive(isShown); }
-    }
-    private void IsParametersShown(bool isShown)
-    {
-        foreach (Graphic obj in settingsObjects) { obj.gameObject.SetActive(isShown); }
+        foreach (Graphic obj in _parametersObjects) 
+        { 
+            obj.gameObject.SetActive(isShown); 
+            if (obj.name == "TabLight")
+            {
+                obj.gameObject.SetActive(false);
+            }
+        }
     }
 
+    private void LoadMenu()
+    {
+        SceneManager.LoadScene(_menuSceneName);
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(false, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        IsParameterShown(false, _gameOverObjects);
+        _crosshair.SetActive(false);
+    }
     private void LoadGame()
     {
-        SceneManager.LoadScene(menuSceneName);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(true, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        IsParameterShown(false, _gameOverObjects);
     }
+
     private void PauseGame(bool isPaused)
     {
         if (isPaused) 
         { 
-            pause = true;
+            _pause = true;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
+            Time.timeScale = 0;
         }
         else 
         { 
-            pause = false;
+            _pause = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            Time.timeScale = 1;
         }
     }
 }

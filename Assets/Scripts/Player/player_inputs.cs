@@ -4,11 +4,12 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class player_inputs : MonoBehaviour
+public class Player_inputs : MonoBehaviour
 {
     [SerializeField] PlayerInput  InputAction;
 
     public bool menu = false;
+    public bool map = false;
     public bool interact = false;
     public bool shoot = false;
     public bool flashlight = false;
@@ -60,6 +61,18 @@ public class player_inputs : MonoBehaviour
         else if (context.canceled)
         {
             menu = false;
+        }
+    }
+
+    public void Map(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            map = true;
+        }
+        else if (context.canceled)
+        {
+            map = false;
         }
     }
 

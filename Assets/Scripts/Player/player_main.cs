@@ -2,222 +2,362 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.Profiling;
+using UnityEngine.Rendering;
 
-public class player_main : MonoBehaviour
+//using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
+
+public class Player_main : MonoBehaviour
 {
-    [Header("Player Parametres")]
-    [SerializeField] GameObject vCamera;
-    [SerializeField, Range(0.01f, 10f)] float xSensitivity = 1f;
-    [SerializeField, Range(0.01f, 10f)] float ySensitivity = 1f;
-    [Range(1, 100)] public int speed = 20;
-    [Range(1f, 5f)] public float sprintMultiplier = 2f;
-    [SerializeField] float interactionDist;
-    [SerializeField] float shootDist;
-    [SerializeField] Light lamp;
+    [Header("Player Variables")]
+    [SerializeField, Range(0.01f, 10f)] private float _xSensitivity = 1f;
+    [SerializeField, Range(0.01f, 10f)] private float _ySensitivity = 1f;
+    [Range(1, 100)] public int _speed = 20;
+    [Range(1f, 5f)] public float _sprintMultiplier = 2f;
+    [SerializeField] private float _interactionDist;
+    [SerializeField] private float _shootDist;
 
-    [Header("Player Variables Visualisation")]
-    [SerializeField] Vector2 move;
-    public bool isCinematic;
-    public bool isChased;
-    public Transform moveToward;
-    [SerializeField] bool interact;
-    [SerializeField] bool hasInteracted;
-    [SerializeField] bool flashlight;
-    [SerializeField] bool hasflashed;
-    [SerializeField] float range;
-    [SerializeField] bool shoot;
-    [SerializeField] bool hasShooted;
-    [SerializeField] bool menu;
-    [SerializeField] bool hasMenu;
-    [SerializeField] Vector2 cam;
-    [SerializeField] bool isGrounded;
+    [SerializeField] private float _bobbingSpeed;
+    [SerializeField] private float _bobbingAmplitude;
 
-    bool gamePaused = false;
-
-    public player_inputs player_Inputs;
+    [SerializeField] private string _saveTag = "Respawn";
 
     [Header("Player Components")]
-    [SerializeField] Rigidbody rb;
-    [SerializeField] CinemachineVirtualCamera cinemachine;
-    [SerializeField] PauseMenuScript pauseMenu;
+    [SerializeField] private Light _flashlight;
+    [SerializeField] private Volume _globalVolume;
+    [SerializeField] private GameObject _virtualCameraGameObject;
+    [SerializeField] private GameObject _gun;
+
+    [Header("Debug Variables - Don't assign anything here")]
+    public bool gamePaused = false;
+    public bool isInCinematic = false;
+    public bool isBeingChased = false;
+    public Transform moveToward = null;
+
+    [SerializeField] private float _flashlightRange;
+    [SerializeField] private bool _isInteracting;
+    [SerializeField] private bool _hasInteracted;
+    [SerializeField] private bool _isUsingFlashlight;
+    [SerializeField] private bool _hasUsedFlashlight;
+    [SerializeField] private bool _isShooting;
+    [SerializeField] private bool _hasShot;
+    [SerializeField] private bool _pressingMap;
+    [SerializeField] private bool _hasPressedMap;
+    [SerializeField] private bool _pressingMenu;
+    [SerializeField] private bool _hasPressedMenu;
+    [SerializeField] private Vector2 _nextMove;
+    [SerializeField] private Vector2 _cameraRotation;
+    [SerializeField] private float _currentBobbingTime;
+    [SerializeField] private float _startingYCamPos;
+    [SerializeField] private bool _hasGun;
+
+    [Header("Debug Components - Don't assign anything here")]
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private CinemachineVirtualCamera _virtualCameraCinemachine;
+    [SerializeField] private PauseMenuScript _pauseMenu;
+    [SerializeField] private Player_inputs player_Inputs;
+    [SerializeField] private Ennemy _ennemyScript;
+    [SerializeField] private GunScript _gunScript;
+    [SerializeField] private SaveSystem _saveSystem;
+
+    [Header("Debug GV Profiles - Don't assign anything here")]
+    [SerializeField] private ChromaticAberration _chromaticAberration;
+    [SerializeField] private DepthOfField _depthOfField;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        cinemachine = vCamera.GetComponent<CinemachineVirtualCamera>();
-        pauseMenu = GetComponent<PauseMenuScript>();
+        _saveSystem = GameObject.FindGameObjectWithTag(_saveTag).GetComponent<SaveSystem>();
 
-        range = lamp.range;
+        _rigidbody = GetComponent<Rigidbody>();
+        _virtualCameraCinemachine = _virtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+        _pauseMenu = GetComponent<PauseMenuScript>();
+
+        _flashlightRange = _flashlight.range;
+        _startingYCamPos = _virtualCameraGameObject.transform.localPosition.y;
+
+        _gunScript = _gun.GetComponent<GunScript>();
+
+        if (_globalVolume.profile.TryGet(out ChromaticAberration chromaticAberration)) 
+        { 
+            _chromaticAberration = chromaticAberration;
+        }
+        if(_globalVolume.profile.TryGet(out DepthOfField depthOfField))
+        {
+            _depthOfField = depthOfField;
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        Reload();
     }
 
-    void Update()
+    public void Reload()
+    {
+        if (_saveSystem._gotGun)
+        {
+            _gunScript.DiscoverGun();
+            _hasGun = true;
+        }
+    }
+
+    void FixedUpdate()
     {
         GetInputs();
-        if (isCinematic) { MoveToward(); }
+        if (isInCinematic) { MoveToward(); }
         else
         {
-            Move();
-            Cam();
+            Movements();
+            CameraRotation();
             Interaction();
             Flashlight();
             Shoot();
+            Map();
         }
-
+        PlayerGlobalVolume();
         Menu();
     }
 
     void GetInputs()
     {
-        move = player_Inputs.move;
+        _nextMove = player_Inputs.move;
 
-        interact = player_Inputs .interact;
+        _isInteracting = player_Inputs .interact;
 
-        flashlight = player_Inputs.flashlight;
+        //_isUsingFlashlight = player_Inputs.flashlight;
 
-        shoot = player_Inputs.shoot;
+        _isShooting = player_Inputs.shoot;
 
-        menu = player_Inputs.menu;
+        _pressingMap = player_Inputs.map;
 
-        cam = player_Inputs.cam;
+        _pressingMenu = player_Inputs.menu;
+
+        _cameraRotation.x = player_Inputs.cam.x * _xSensitivity;
+        _cameraRotation.y = player_Inputs.cam.y * _ySensitivity;
+
+        _currentBobbingTime = _nextMove == Vector2.zero ? 0 : _currentBobbingTime + _bobbingSpeed * Time.deltaTime;
     }
 
-    private void Move()
+    private void Movements()
     {
-        Vector3 direction = (vCamera.transform.forward * move.x) + (vCamera.transform.right * move.y);
+        Vector3 direction = (_virtualCameraGameObject.transform.forward * _nextMove.x) + (_virtualCameraGameObject.transform.right * _nextMove.y);
         direction.y = 0;
-        rb.velocity = direction * speed * Time.deltaTime * 10;
-        if(isChased)
+        _rigidbody.velocity = direction * _speed * Time.deltaTime * 10;
+        if(isBeingChased)
         {
-            rb.velocity = rb.velocity * sprintMultiplier;
+            _rigidbody.velocity *= _sprintMultiplier;
         }
     }
 
-    private void Cam()
+    private void CameraRotation()
     {
-        Vector3 _rotation = new Vector3(cam.x * xSensitivity / 10, -cam.y * ySensitivity / 10, 0);
-        vCamera.transform.eulerAngles -= _rotation;
+        Vector3 currentEuler = _virtualCameraGameObject.transform.eulerAngles;
+        float eulerX = -_cameraRotation.x / 10 + currentEuler.x;
+        float eulerY =  _cameraRotation.y / 10 + currentEuler.y;
+
+        if(eulerX > 89 && eulerX <=180)
+        {
+            eulerX = 89;
+        }
+        if (eulerX > 180 && eulerX < 271)
+        {
+            eulerX = 271;
+        }
+
+        _virtualCameraGameObject.transform.eulerAngles = new Vector3(eulerX, eulerY);
+
+        float currentBobbingPos = (Mathf.Sin(_currentBobbingTime)*_bobbingAmplitude);
+        _virtualCameraGameObject.transform.localPosition = new Vector3(0, _startingYCamPos - currentBobbingPos, 0);
+
+        _flashlight.transform.localEulerAngles = new Vector3(-_cameraRotation.x / 10, _cameraRotation.y / 10);
+
     }
 
     private void Interaction()
     {
-        if (!hasInteracted && interact)
+        if (!_hasInteracted && _isInteracting)
         {
-            hasInteracted = true;
+            _hasInteracted = true;
 
-            Transform hit = SendRay(interactionDist, Color.red);
+            Transform hit = SendRay(_interactionDist, Color.red);
+
             if (hit == null) { return; }
-            TEST_Interact test_Interact = hit.transform.GetComponent<TEST_Interact>();
-            if (test_Interact != null)
+            Env_interact test_Interact = hit.transform.GetComponent<Env_interact>();
+
+            if (test_Interact == null) { return; }
+
+            if (test_Interact.putPlayerInCinematic)
             {
-                Transform moveTo = test_Interact.IsInteracted();
-                moveToward = moveTo;
+                moveToward = test_Interact.IsInteracted(_gunScript.hasBullet);
                 moveToward.position = new Vector3(moveToward.position.x, transform.position.y, moveToward.position.z);
-                isCinematic = true;
-                cinemachine.LookAt = hit;
+                isInCinematic = true;
+                _virtualCameraCinemachine.LookAt = hit;
+                Invoke(nameof(noMoreCinematic), 1f);
+            }
+
+            switch (test_Interact.utility)
+            {
+                case Env_interact.Utility.Door:
+                    break;
+
+                case Env_interact.Utility.Gun:
+                    _hasGun = true;
+                    _gunScript.DiscoverGun();
+                    break;
+
+                case Env_interact.Utility.Ammo:
+                    _gunScript.GetAmmo();
+                    break;
             }
 
         }
-        else if (hasInteracted && !interact)
+        else if (_hasInteracted && !_isInteracting)
         {
-            hasInteracted = false;
+            _hasInteracted = false;
         }
     }
 
     private void MoveToward()
     {
-        rb.velocity = Vector3.zero;
-        rb.position = Vector3.MoveTowards(rb.position, moveToward.position, speed * Time.deltaTime);
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, moveToward.position, _speed * Time.deltaTime);
     }
 
     private void noMoreCinematic()
     {
-        isCinematic = false;
-        cinemachine.LookAt = null;
+        isInCinematic = false;
+        _virtualCameraCinemachine.LookAt = null;
     }
 
     private void Flashlight()
     {
-        if(flashlight && !hasflashed && lamp.range != 0)
+        if(_isUsingFlashlight && !_hasUsedFlashlight && _flashlight.range != 0)
         {
-            lamp.range = 0;
-            hasflashed = true;
+            _flashlight.range = 0;
+            _hasUsedFlashlight = true;
         }
-        else if (flashlight && !hasflashed && lamp.range == 0)
+        else if (_isUsingFlashlight && !_hasUsedFlashlight && _flashlight.range == 0)
         {
-            lamp.range = range;
-            hasflashed = true;
+            _flashlight.range = _flashlightRange;
+            _hasUsedFlashlight = true;
         }
-        else if (!flashlight && hasflashed)
+        else if (!_isUsingFlashlight && _hasUsedFlashlight)
         {
-            hasflashed = false;
+            _hasUsedFlashlight = false;
         }
     }
 
     private void Shoot()
     {
-        if (!hasShooted && shoot)
+        if (!_hasShot && _isShooting && _hasGun && _gunScript.hasBullet)
         {
-            hasShooted = true;
+            _hasShot = true;
 
-            Transform hit = SendRay(shootDist, Color.blue);
+            Transform hit = SendRay(_shootDist, Color.blue);
             if ( hit != null)
             {
-                TEST_Shoot test_shoot = hit.transform.GetComponent<TEST_Shoot>();
-                if (test_shoot != null)
-                {
-                    test_shoot.IsShot();
-                }
+                _gunScript.GunShot();
             }
-
+            if (hit.gameObject.tag == "Monster")
+            {
+                Debug.Log("Stunning");
+                Ennemy monster = hit.gameObject.GetComponentInParent<Ennemy>();
+                StartCoroutine(monster.StunState());
+            }
         }
-        else if (hasShooted && !shoot)
+        else if (_hasShot && !_isShooting)
         {
-            hasShooted = false;
+            _hasShot = false;
         }
     }
 
     private void Menu()
     {
-        if (!hasMenu && menu)
+        if (!_hasPressedMenu && _pressingMenu)
         {
-            hasMenu = true;
+            _hasPressedMenu = true;
 
-            pauseMenu.EscapeKey();
+            _pauseMenu.EscapeKey();
 
         }
-        else if (hasMenu && !menu)
+        else if (_hasPressedMenu && !_pressingMenu)
         {
-            hasMenu = false;
+            _hasPressedMenu = false;
+        }
+    }
+
+    private void Map()
+    {
+        if (!_hasPressedMap && _pressingMap)
+        {
+            _hasPressedMap = true;
+
+            _pauseMenu.MapKey(true);
+        }
+        else if (_hasPressedMap && !_pressingMap)
+        {
+            _hasPressedMap = false;
+
+            _pauseMenu.MapKey(false);
         }
     }
 
 
+    public void CameraNoise()
+    {
+        _virtualCameraCinemachine.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2;
+        Invoke(nameof(StopNoise), 2);
+    }
 
+    public void IsKilled()
+    {
+        _pauseMenu.GameOver();
+    }
 
-    private Transform SendRay(float _distance, Color color)
+    private void StopNoise()
+    {
+        _virtualCameraCinemachine.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0;
+    }
+
+    public void EnnemyGlobalVolume(Transform ennemy)
+    {
+        if(_ennemyScript == null) { _ennemyScript = ennemy.GetComponent<Ennemy>(); }
+
+        float ennDistance = Vector3.Distance(transform.position, ennemy.position);
+
+        _chromaticAberration.intensity.value = 1 - ennDistance /  _ennemyScript._roamRange;
+    }
+
+    private void PlayerGlobalVolume()
+    {
+        Transform ray = SendRay(100, Color.blue, 0.1f);
+        float rayDistance = Vector3.Distance(transform.position, ray.position);
+
+        _depthOfField.focusDistance.value = rayDistance;
+
+    }
+
+    private Transform SendRay(float _distance, Color color, float debugTime = 10f)
     {
         Vector3 rayOrigin = new Vector3(0.5f, 0.5f, 0f);
 
         Ray ray = Camera.main.ViewportPointToRay(rayOrigin);
-        Debug.DrawRay(ray.origin, ray.direction * _distance, color, 10f);
+        Debug.DrawRay(ray.origin, ray.direction * _distance, color, debugTime);
 
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, _distance))
         {
             return hit.transform;
-
         }
         else
         {
             return null;
         }
-
     }
-
 }

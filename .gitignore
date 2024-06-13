@@ -7,3 +7,5 @@ UserSettings
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
 UNTITLED.sln
+Temp
+.vs

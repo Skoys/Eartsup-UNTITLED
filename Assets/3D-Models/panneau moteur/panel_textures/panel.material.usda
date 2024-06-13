@@ -1,0 +1,125 @@
+#usda 1.0
+(
+    "Exported from Adobe Substance 3D Painter 10.0.0"
+    defaultPrim = "RootNode"
+)
+
+def "RootNode"
+{
+    def Scope "material"
+    {
+        def Material "DefaultMaterial" (
+            customData = {
+                dictionary adobe = {
+                    dictionary painter = {
+                        asset painterProject_spp = @C:/Users/Rog Strix/Desktop/pfa/panel.spp@
+                    }
+                }
+            }
+        )
+        {
+            asset inputs:basecolor_tex = @panel_textures/DefaultMaterial_Base_color_1001.png@
+            asset inputs:compositedAmbientOcclusion_tex = @panel_textures/DefaultMaterial_Mixed_AO_1001.png@
+            asset inputs:compositedNormalGL_tex = @panel_textures/DefaultMaterial_Normal_OpenGL_1001.png@
+            asset inputs:height_tex = @panel_textures/DefaultMaterial_Height_1001.png@
+            asset inputs:metallic_tex = @panel_textures/DefaultMaterial_Metallic_1001.png@
+            asset inputs:normal_tex = @panel_textures/DefaultMaterial_Normal_1001.png@
+            asset inputs:roughness_tex = @panel_textures/DefaultMaterial_Roughness_1001.png@
+            token outputs:displacement.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/UsdPreviewSurfaceShader.outputs:displacement>
+            token outputs:surface.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/UsdPreviewSurfaceShader.outputs:surface>
+
+            def NodeGraph "UsdPreviewSurface"
+            {
+                def Shader "UsdPreviewSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    float3 inputs:diffuseColor.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/diffuseColorTextureShader.outputs:rgb>
+                    float inputs:metallic.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/metallicTextureShader.outputs:r>
+                    normal3f inputs:normal.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/normalTextureShader.outputs:rgb>
+                    float inputs:occlusion.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/occlusionTextureShader.outputs:r>
+                    float inputs:roughness.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/roughnessTextureShader.outputs:r>
+                    token outputs:displacement
+                    token outputs:surface
+                }
+
+                def Shader "TexCoordReader"
+                {
+                    uniform token info:id = "UsdPrimvarReader_float2"
+                    token inputs:varname = "st"
+                    float2 outputs:result
+                }
+
+                def Shader "diffuseColorTextureShader"
+                {
+                    uniform token info:id = "UsdUVTexture"
+                    asset inputs:file.connect = </RootNode/material/DefaultMaterial.inputs:basecolor_tex>
+                    token inputs:sourceColorSpace = "sRGB"
+                    float2 inputs:st.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/TexCoordReader.outputs:result>
+                    token inputs:wrapS = "repeat"
+                    token inputs:wrapT = "repeat"
+                    float3 outputs:rgb
+                }
+
+                def Shader "roughnessTextureShader"
+                {
+                    uniform token info:id = "UsdUVTexture"
+                    asset inputs:file.connect = </RootNode/material/DefaultMaterial.inputs:roughness_tex>
+                    token inputs:sourceColorSpace = "raw"
+                    float2 inputs:st.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/TexCoordReader.outputs:result>
+                    token inputs:wrapS = "repeat"
+                    token inputs:wrapT = "repeat"
+                    float outputs:r
+                }
+
+                def Shader "metallicTextureShader"
+                {
+                    uniform token info:id = "UsdUVTexture"
+                    asset inputs:file.connect = </RootNode/material/DefaultMaterial.inputs:metallic_tex>
+                    token inputs:sourceColorSpace = "raw"
+                    float2 inputs:st.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/TexCoordReader.outputs:result>
+                    token inputs:wrapS = "repeat"
+                    token inputs:wrapT = "repeat"
+                    float outputs:r
+                }
+
+                def Shader "occlusionTextureShader"
+                {
+                    uniform token info:id = "UsdUVTexture"
+                    asset inputs:file.connect = </RootNode/material/DefaultMaterial.inputs:compositedAmbientOcclusion_tex>
+                    token inputs:sourceColorSpace = "raw"
+                    float2 inputs:st.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/TexCoordReader.outputs:result>
+                    token inputs:wrapS = "repeat"
+                    token inputs:wrapT = "repeat"
+                    float outputs:r
+                }
+
+                def Shader "normalTextureShader"
+                {
+                    uniform token info:id = "UsdUVTexture"
+                    float4 inputs:bias = (-1, -1, -1, 0)
+                    asset inputs:file.connect = </RootNode/material/DefaultMaterial.inputs:compositedNormalGL_tex>
+                    float4 inputs:scale = (2, 2, 2, 1)
+                    token inputs:sourceColorSpace = "raw"
+                    float2 inputs:st.connect = </RootNode/material/DefaultMaterial/UsdPreviewSurface/TexCoordReader.outputs:result>
+                    token inputs:wrapS = "repeat"
+                    token inputs:wrapT = "repeat"
+                    normal3f outputs:rgb
+                }
+            }
+        }
+    }
+
+    over "Box001"
+    {
+        over "Box004"
+        {
+            over "Box004" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </RootNode/material/DefaultMaterial>
+            }
+        }
+    }
+}
+

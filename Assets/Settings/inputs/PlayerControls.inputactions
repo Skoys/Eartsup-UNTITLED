@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "4c53cf63-79dd-4520-b76f-472a3edc65a5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Menu",
                     "type": "Button",
                     "id": "51e6a230-0722-4c90-a849-f71642f8bee0",
@@ -190,6 +199,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "9de0f271-081c-4fbb-a716-bdce402d44ad",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

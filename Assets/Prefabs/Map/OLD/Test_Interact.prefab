@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8892356494249074185}
   - component: {fileID: 2809102868326717678}
   m_Layer: 0
-  m_Name: Test_Light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 5884097282418126688}
   - component: {fileID: 6152658811509316329}
   - component: {fileID: 5879391903691590196}
-  - component: {fileID: 8858054774764411780}
+  - component: {fileID: 2149090676423248386}
   m_Layer: 0
   m_Name: Test_Interact
   m_TagString: Untagged
@@ -257,7 +257,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8858054774764411780
+--- !u!114 &2149090676423248386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,8 +266,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8001651739344266766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59ccdf6ccec8d9c47a1b3827fc64707f, type: 3}
+  m_Script: {fileID: 11500000, guid: d6cf4d5b8506b8c41abe385793c24888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   light: {fileID: 8892356494249074185}
   playerMoveTo: {fileID: 2953962762644454587}
+  isAffecting: []
