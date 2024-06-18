@@ -114,8 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   lift:
-    m_OverrideState: 0
-    m_Value: {x: 0.89851093, y: 0.95641154, z: 1, w: -0.007127475}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: -0.00000009553752}
   gamma:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}

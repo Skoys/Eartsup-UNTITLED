@@ -1,7 +1,6 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
@@ -71,6 +70,7 @@ public class Player_main : MonoBehaviour
     [Header("Debug GV Profiles - Don't assign anything here")]
     [SerializeField] private ChromaticAberration _chromaticAberration;
     [SerializeField] private DepthOfField _depthOfField;
+    [SerializeField] private LiftGammaGain _liftGammaGain;
 
     void Start()
     {
@@ -85,13 +85,17 @@ public class Player_main : MonoBehaviour
 
         _gunScript = _gun.GetComponent<GunScript>();
 
-        if (_globalVolume.profile.TryGet(out ChromaticAberration chromaticAberration)) 
-        { 
+        if (_globalVolume.profile.TryGet(out ChromaticAberration chromaticAberration))
+        {
             _chromaticAberration = chromaticAberration;
         }
-        if(_globalVolume.profile.TryGet(out DepthOfField depthOfField))
+        if (_globalVolume.profile.TryGet(out DepthOfField depthOfField))
         {
             _depthOfField = depthOfField;
+        }
+        if (_globalVolume.profile.TryGet(out LiftGammaGain liftGammaGain))
+        {
+            _liftGammaGain = liftGammaGain;
         }
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -130,7 +134,7 @@ public class Player_main : MonoBehaviour
     {
         _nextMove = player_Inputs.move;
 
-        _isInteracting = player_Inputs .interact;
+        _isInteracting = player_Inputs.interact;
 
         //_isUsingFlashlight = player_Inputs.flashlight;
 
@@ -151,7 +155,7 @@ public class Player_main : MonoBehaviour
         Vector3 direction = (_virtualCameraGameObject.transform.forward * _nextMove.x) + (_virtualCameraGameObject.transform.right * _nextMove.y);
         direction.y = 0;
         _rigidbody.velocity = direction * _speed * Time.deltaTime * 10;
-        if(isBeingChased)
+        if (isBeingChased)
         {
             _rigidbody.velocity *= _sprintMultiplier;
         }
@@ -161,9 +165,9 @@ public class Player_main : MonoBehaviour
     {
         Vector3 currentEuler = _virtualCameraGameObject.transform.eulerAngles;
         float eulerX = -_cameraRotation.x / 10 + currentEuler.x;
-        float eulerY =  _cameraRotation.y / 10 + currentEuler.y;
+        float eulerY = _cameraRotation.y / 10 + currentEuler.y;
 
-        if(eulerX > 89 && eulerX <=180)
+        if (eulerX > 89 && eulerX <= 180)
         {
             eulerX = 89;
         }
@@ -174,7 +178,7 @@ public class Player_main : MonoBehaviour
 
         _virtualCameraGameObject.transform.eulerAngles = new Vector3(eulerX, eulerY);
 
-        float currentBobbingPos = (Mathf.Sin(_currentBobbingTime)*_bobbingAmplitude);
+        float currentBobbingPos = (Mathf.Sin(_currentBobbingTime) * _bobbingAmplitude);
         _virtualCameraGameObject.transform.localPosition = new Vector3(0, _startingYCamPos - currentBobbingPos, 0);
 
         _flashlight.transform.localEulerAngles = new Vector3(-_cameraRotation.x / 10, _cameraRotation.y / 10);
@@ -187,7 +191,7 @@ public class Player_main : MonoBehaviour
         {
             _hasInteracted = true;
 
-            Transform hit = SendRay(_interactionDist, Color.red);
+            Transform hit = SendRay(_interactionDist, UnityEngine.Color.red);
 
             if (hit == null) { return; }
             Env_interact test_Interact = hit.transform.GetComponent<Env_interact>();
@@ -239,7 +243,7 @@ public class Player_main : MonoBehaviour
 
     private void Flashlight()
     {
-        if(_isUsingFlashlight && !_hasUsedFlashlight && _flashlight.range != 0)
+        if (_isUsingFlashlight && !_hasUsedFlashlight && _flashlight.range != 0)
         {
             _flashlight.range = 0;
             _hasUsedFlashlight = true;
@@ -261,8 +265,8 @@ public class Player_main : MonoBehaviour
         {
             _hasShot = true;
 
-            Transform hit = SendRay(_shootDist, Color.blue);
-            if ( hit != null)
+            Transform hit = SendRay(_shootDist, UnityEngine.Color.blue);
+            if (hit != null)
             {
                 _gunScript.GunShot();
             }
@@ -329,24 +333,23 @@ public class Player_main : MonoBehaviour
 
     public void EnnemyGlobalVolume(Transform ennemy)
     {
-        if(_ennemyScript == null) { _ennemyScript = ennemy.GetComponent<Ennemy>(); }
+        if (_ennemyScript == null) { _ennemyScript = ennemy.GetComponent<Ennemy>(); }
 
         float ennDistance = Vector3.Distance(transform.position, ennemy.position);
 
-        _chromaticAberration.intensity.value = 1 - ennDistance /  _ennemyScript._roamRange;
+        _chromaticAberration.intensity.value = 1 - ennDistance / _ennemyScript._roamRange;
     }
 
     private void PlayerGlobalVolume()
     {
-        Transform ray = SendRay(100, Color.blue, 0.1f);
-        if(ray == null) {return;}
+        Transform ray = SendRay(100, UnityEngine.Color.blue, 0.1f);
+        if (ray == null) { return; }
         float rayDistance = Vector3.Distance(transform.position, ray.position);
 
         _depthOfField.focusDistance.value = rayDistance;
-
     }
 
-    private Transform SendRay(float _distance, Color color, float debugTime = 10f)
+    private Transform SendRay(float _distance, UnityEngine.Color color, float debugTime = 10f)
     {
         Vector3 rayOrigin = new Vector3(0.5f, 0.5f, 0f);
 
@@ -362,6 +365,22 @@ public class Player_main : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+
+    public void Ending()
+    {
+        StartCoroutine(WhiteVision());
+    }
+
+    private IEnumerator WhiteVision()
+    {
+        Debug.Log(_liftGammaGain.lift.value);
+        while(_liftGammaGain.lift.value.w < 2)
+        {
+            _liftGammaGain.lift.value = new Vector4(0,0,0, _liftGammaGain.lift.value.w + 1 / (Application.targetFrameRate / 2));
+            yield return null;
         }
     }
 }
