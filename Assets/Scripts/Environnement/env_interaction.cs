@@ -55,7 +55,7 @@ public class Env_interact : MonoBehaviour
                 {
                     _interacted = true;
                     if (_cube != null) { _cube.GetComponent<Renderer>().material.color = Color.green; }
-                    _minimap.gameObject.SetActive(false);
+                    if (_minimap != null) { _minimap.gameObject.SetActive(false); }
                     _animation.Play();
                     gameObject.GetComponent<Collider>().enabled = false;
                 }
