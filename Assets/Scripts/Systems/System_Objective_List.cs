@@ -65,16 +65,24 @@ public class Objective_List : MonoBehaviour
                 return "Find the Freight elevator.";
 
             case 4:
-                _maxObjectiveProgression = 3;
-                return "Get the fuel.";
+                _maxObjectiveProgression = 1;
+                return "Open the locked Door with the keys.";
 
             case 5:
+                _maxObjectiveProgression = 3;
+                return "Get the Fuel.";
+
+            case 6:
+                _maxObjectiveProgression = 1;
+                return "Add the fuel to the Generator";
+
+            case 7:
                 _maxObjectiveProgression = 1;
                 return "Activate the Freight elevator.";
 
-            case 6:
-                _maxObjectiveProgression = 0;
-                return "Game Finished :)";
+            case 8:
+                _maxObjectiveProgression = 999;
+                return "Game Finished";
         }
         return null;
     }

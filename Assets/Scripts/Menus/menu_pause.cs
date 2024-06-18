@@ -63,7 +63,7 @@ public class PauseMenuScript : MonoBehaviour
             IsParameterShown(false, _minimapObjects);
             IsParameterShown(false, _mapObjects);
             _player.isInCinematic = true;
-            _player.moveToward = _player.transform;
+            _player.moveToward = _player.transform.position;
         }
         else
         {

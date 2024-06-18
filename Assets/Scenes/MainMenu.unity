@@ -890,7 +890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &604125897
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1439,7 +1439,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: 'New Game
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -1582,7 +1584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1110196417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2237,7 +2239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c38c0962b8e9248be206b1f44e64be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPS: 60
 --- !u!1 &1609954535
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,7 +2742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2001283992
 RectTransform:
   m_ObjectHideFlags: 0

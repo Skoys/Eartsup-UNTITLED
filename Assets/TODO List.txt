@@ -1,0 +1,27 @@
+	//Crispy Gun Shadows
+	//Gun Go in Walls
+	//Ennemy stupid
+	//Create REAL door animations
+	//Place the lamps
+	//Final Lever always usable
+	//Door 5 opened early
+	//Door 5 Button is on the floor
+	//Add to buttons the emission if they can be interacted
+	//Correct the jerrycan animation
+	//Correct ALL the "?" marks
+	//Boutton 7 WTF
+	//Door 5 on the floor (is fixed if all doors have animations i think)
+(Ask for HELP) Gun dont have shadow 
+	//Objective with jerrycans bugs
+	//Add collision TO ALL OBJECTS
+	//Porte vers Zone 3 minimap un peu décalée
+	//Deuxieme interaction sur bouton gun qui beugue
+Animation Monte-Charge
+Credits
+Design Environnement
+Sons
+	//New Game au lieu de Start
+
+
+Paul 1er
+-Faire une indication de quand le monstre pourchasse le joueur

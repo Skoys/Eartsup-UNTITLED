@@ -10,6 +10,7 @@ public class Env_interact : MonoBehaviour
     public Utility utility = Utility.Door;
     [SerializeField] private GameObject _minimap;
     [SerializeField] private GameObject _cube;
+    [SerializeField] private GameObject[] _visuals;
     [SerializeField] private Color _baseColor = Color.red;
     public bool putPlayerInCinematic = true;
     [SerializeField] private Animation _animation;
@@ -23,7 +24,6 @@ public class Env_interact : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _interacted = false;
     [SerializeField] private TextMeshProUGUI _minimapText;
-    [SerializeField] private string _saveTag = "Respawn";
     [SerializeField] private SaveSystem _saveSystem;
 
     public enum Utility
@@ -36,12 +36,12 @@ public class Env_interact : MonoBehaviour
 
     public void Start()
     {
-        _cube.GetComponent<Renderer>().material.color = _baseColor;
-        _saveSystem = GameObject.FindGameObjectWithTag(_saveTag).GetComponent<SaveSystem>();
+        if(_cube != null) { _cube.GetComponent<Renderer>().material.color = _baseColor; }
+        _saveSystem = SaveSystem.instance;
 
         _animation = GetComponent<Animation>();
 
-        _minimapText = _minimap.GetComponent<TextMeshProUGUI>();
+        if (_minimap != null) { _minimapText = _minimap.GetComponent<TextMeshProUGUI>(); }
 
         Reload();
     }
@@ -54,8 +54,10 @@ public class Env_interact : MonoBehaviour
                 if (_saveSystem.GetCurrentObjective() >= _saveNumber)
                 {
                     _interacted = true;
-                    _cube.GetComponent<Renderer>().material.color = Color.green;
+                    if (_cube != null) { _cube.GetComponent<Renderer>().material.color = Color.green; }
                     _minimap.gameObject.SetActive(false);
+                    _animation.Play();
+                    gameObject.GetComponent<Collider>().enabled = false;
                 }
                 else if (_saveSystem.HasBeenInteracted(_idNumber))
                 {
@@ -66,45 +68,67 @@ public class Env_interact : MonoBehaviour
             case Utility.Gun:
                 if (_saveSystem._gotGun)
                 {
+                    _animation.Play();
                     _interacted = true;
                     Interacted();
+                    gameObject.GetComponent<Collider>().enabled = false;
                 }
                 break;
         }
     }
 
-    public Transform IsInteracted(bool ammunition)
+    public void IsItMyTurn(int currentObjective)
+    {
+        if(_visuals.Length == 0) {  return; }
+        if (currentObjective + 1 == _saveNumber)
+        {
+            foreach(GameObject visual in _visuals)
+            {
+                visual.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            }
+        }
+        else
+        {
+            foreach (GameObject visual in _visuals)
+            {
+                visual.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+            }
+        }
+    }
+
+    public Vector3 IsInteracted(bool ammunition)
     {
         if(utility == Utility.Ammo && ammunition)
         {
-            return null;
+            return Vector3.zero;
         }
 
         if (!_interacted)
         {
             _interacted = true;
-            _animation.Play("OpenLever");
+            _animation.Play();
             Invoke(nameof(Interacted), 1f);
-            return _playerMoveTo.transform;
+            return _playerMoveTo.transform.position;
         }
 
-        return null;
+        return Vector3.zero;
     }
 
     private void Interacted()
     {
-        _cube.GetComponent<Renderer>().material.color = Color.green;
-        _minimap.gameObject.SetActive(false);
+        if (_cube != null) { _cube.GetComponent<Renderer>().material.color = Color.green; }
+        if (_minimap != null) { _minimap.gameObject.SetActive(false); }
 
         switch (utility)
         {
             case Utility.Door:
                 _saveSystem.ObjectInteracted(_idNumber);
+                gameObject.GetComponent<Collider>().enabled = false;
                 foreach (Env_door door in _isAffecting) { door.ButtonBeenInteracted(); }
                 break;
 
             case Utility.Gun:
-                _saveSystem.GotGun();
+                _saveSystem._gotGun = true;
                 break;
 
             case Utility.Ammo:

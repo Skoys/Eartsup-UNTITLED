@@ -200,7 +200,10 @@ public class Ennemy : MonoBehaviour
         {
             _navMeshAgent.SetDestination(_playerTransform.position);
         }
-        ChangeState(MonsterState.Teleport);
+        else
+        {
+            ChangeState(MonsterState.Teleport);
+        }
     }
 
     private bool CheckPlayer(Color color)

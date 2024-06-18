@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2039156834867353729}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.285, y: 1.35, z: -0.52}
+  m_LocalPosition: {x: 0.023, y: 1.31, z: -0.52}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -431,7 +431,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.5329895, y: 2.1725411, z: 1.1803894}
-  m_Center: {x: 0.26649475, y: 0.5862706, z: -0.0901947}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &4844352217508785215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +447,7 @@ MonoBehaviour:
   utility: 0
   _minimap: {fileID: 3314949972647304013}
   _cube: {fileID: 2039156834867353729}
+  _visuals: []
   _baseColor: {r: 1, g: 0, b: 0, a: 1}
   putPlayerInCinematic: 1
   _animation: {fileID: 4586063760310509648}
@@ -458,7 +459,6 @@ MonoBehaviour:
   - {fileID: 0}
   _interacted: 0
   _minimapText: {fileID: 0}
-  _saveTag: Respawn
   _saveSystem: {fileID: 0}
 --- !u!111 &4586063760310509648
 Animation:
@@ -492,12 +492,12 @@ PrefabInstance:
     - target: {fileID: 2015482466088784340, guid: 564f304b30e535943a91e5d4dd07e29c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2015482466088784340, guid: 564f304b30e535943a91e5d4dd07e29c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.8000002
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2015482466088784340, guid: 564f304b30e535943a91e5d4dd07e29c,
         type: 3}

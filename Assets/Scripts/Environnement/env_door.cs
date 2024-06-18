@@ -8,19 +8,14 @@ public class Env_door : MonoBehaviour
 {
     [Header("Parameters")]
     [SerializeField] private int _interactionsLeft = 1;
-    [SerializeField] private bool _animate = true;
+    [SerializeField] private bool _rumble = true;
     [SerializeField] private int _saveNumber = 0;
-    [SerializeField] private string _saveTag = "Respawn";
 
     [Header("Optionnal Objects")]
     [SerializeField] private Light _light;
+    [SerializeField] private Animation _animation;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private GameObject _minimapCube;
-
-    [Header("New Transform")]
-    [SerializeField] private Vector3 _newPosition = Vector3.zero;
-    [SerializeField] private Vector3 _newRotation = Vector3.zero;
-    [SerializeField] private float _transformationSpeed = 0.1f;
 
     private SaveSystem _saveSystem;
 
@@ -28,11 +23,12 @@ public class Env_door : MonoBehaviour
     {
         _light = GetComponent<Light>();
         _audioSource = GetComponent<AudioSource>();
-        _saveSystem = GameObject.FindGameObjectWithTag(_saveTag).GetComponent<SaveSystem>();
+        _animation = GetComponent<Animation>();
+        _saveSystem = SaveSystem.instance;
         if(_saveSystem.GetCurrentObjective() >= _saveNumber)
         {
-            transform.position = _newPosition;
-            _minimapCube.SetActive(false);
+            _animation.Play();
+            if (_minimapCube != null) { _minimapCube.SetActive(false); }
         }
     }
 
@@ -54,30 +50,24 @@ public class Env_door : MonoBehaviour
             _audioSource.Play();
         }
 
-        StartCoroutine(NewTransform());
+        NewTransform();
         _saveSystem.SetCurrentObjective(_saveNumber);
     }
 
-    private IEnumerator NewTransform()
+    private void NewTransform()
     {
-        GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player_main>().CameraNoise();
-
-        if (_animate)
+        Debug.Log("Opening");
+        if (_rumble)
         {
-            while (Vector3.Distance(_newPosition, transform.localPosition) > 0.01f && Vector3.Distance(_newRotation, transform.eulerAngles) > 0.01f)
-            {
-                transform.position = Vector3.MoveTowards(transform.localPosition, _newPosition, _transformationSpeed * Time.deltaTime);
-                transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, _newRotation, _transformationSpeed * Time.deltaTime);
+            GameObject.FindGameObjectWithTag("Player").transform.GetComponent<Player_main>().CameraNoise();
+        }
 
-                yield return null;
-            }
+        Debug.Log("Animating");
+        _animation.Play();
+        if (_minimapCube != null) 
+        { 
             _minimapCube.GetComponent<MeshRenderer>().enabled = false;
+            _minimapCube.SetActive(false);
         }
-        else
-        {
-            transform.position = _newPosition;
-            _minimapCube.GetComponent<MeshRenderer>().enabled = false;
-        }
-        _minimapCube.SetActive(false);
     }
 }

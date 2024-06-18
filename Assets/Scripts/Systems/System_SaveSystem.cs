@@ -8,6 +8,8 @@ using static Ennemy;
 
 public class SaveSystem : MonoBehaviour
 {
+    public static SaveSystem instance;
+
     [SerializeField] private int _currentObjective = 0;
     [SerializeField] private List<int> _interactedObjects;
     [SerializeField] private GameObject _objectiveList;
@@ -23,13 +25,17 @@ public class SaveSystem : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        GameObject[] Respawns = GameObject.FindGameObjectsWithTag(gameObject.tag);
-        foreach (GameObject res in Respawns)
+        if (instance == null)
         {
-            res.GetComponent<SaveSystem>().LoadTheMinimap();
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        if (Respawns.Length > 1) { Destroy(gameObject); }
+        else
+        {
+            instance.LoadTheMinimap();
+            Destroy(gameObject);
+        }
+
         NextMinimapObjective();
     }
 
@@ -40,6 +46,12 @@ public class SaveSystem : MonoBehaviour
         _interactedObjects.Clear();
         NextMinimapObjective();
         SaveTheMinimap();
+
+        Env_interact[] buttons = FindObjectsOfType<Env_interact>();
+        foreach(Env_interact button in buttons)
+        {
+            button.IsItMyTurn(_currentObjective);
+        }
     }
 
     public int GetCurrentObjective()
@@ -56,11 +68,6 @@ public class SaveSystem : MonoBehaviour
     {
         _interactedObjects.Add( id);
         _objectiveList.GetComponent<Objective_List>().ChangeProgression();
-    }
-
-    public void GotGun()
-    {
-        _gotGun=true;
     }
 
     public void AnnonceNewObjectiveList(GameObject gameObject)

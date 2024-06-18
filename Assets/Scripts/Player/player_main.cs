@@ -37,7 +37,7 @@ public class Player_main : MonoBehaviour
     public bool gamePaused = false;
     public bool isInCinematic = false;
     public bool isBeingChased = false;
-    public Transform moveToward = null;
+    public Vector3 moveToward = Vector3.zero;
 
     [SerializeField] private float _flashlightRange;
     [SerializeField] private bool _isInteracting;
@@ -194,7 +194,7 @@ public class Player_main : MonoBehaviour
             if (test_Interact.putPlayerInCinematic)
             {
                 moveToward = test_Interact.IsInteracted(_gunScript.hasBullet);
-                moveToward.position = new Vector3(moveToward.position.x, transform.position.y, moveToward.position.z);
+                moveToward = new Vector3(moveToward.x, transform.position.y, moveToward.z);
                 isInCinematic = true;
                 _virtualCameraCinemachine.LookAt = hit;
                 Invoke(nameof(noMoreCinematic), 1f);
@@ -225,7 +225,7 @@ public class Player_main : MonoBehaviour
     private void MoveToward()
     {
         _rigidbody.velocity = Vector3.zero;
-        _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, moveToward.position, _speed * Time.deltaTime);
+        _rigidbody.position = Vector3.MoveTowards(_rigidbody.position, moveToward, _speed * Time.deltaTime);
     }
 
     private void noMoreCinematic()
@@ -336,6 +336,7 @@ public class Player_main : MonoBehaviour
     private void PlayerGlobalVolume()
     {
         Transform ray = SendRay(100, Color.blue, 0.1f);
+        if(ray == null) {return;}
         float rayDistance = Vector3.Distance(transform.position, ray.position);
 
         _depthOfField.focusDistance.value = rayDistance;

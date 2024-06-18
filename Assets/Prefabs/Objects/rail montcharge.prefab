@@ -507,6 +507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7026915895587456509}
+  - component: {fileID: 3048416509796114430}
   m_Layer: 0
   m_Name: rail montcharge
   m_TagString: Untagged
@@ -523,7 +524,7 @@ Transform:
   m_GameObject: {fileID: 7448175216791843412}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.66, y: 0.2500999, z: -33.01}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -536,6 +537,27 @@ Transform:
   - {fileID: 5065405179404478911}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3048416509796114430
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7448175216791843412}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.41114807, y: 5.239081, z: 0.43043423}
+  m_Center: {x: 6.0328846, y: 2.525777, z: 6.435189}
 --- !u!1 &7939527655409066185
 GameObject:
   m_ObjectHideFlags: 0
