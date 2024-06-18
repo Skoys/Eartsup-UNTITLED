@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
@@ -11,6 +12,7 @@ using UnityEngine.Rendering;
 
 //using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
+using Color = System.Drawing.Color;
 
 public class Player_main : MonoBehaviour
 {
@@ -55,6 +57,7 @@ public class Player_main : MonoBehaviour
     [SerializeField] private float _currentBobbingTime;
     [SerializeField] private float _startingYCamPos;
     [SerializeField] private bool _hasGun;
+    [SerializeField] private float _gravity;
 
     [Header("Debug Components - Don't assign anything here")]
     [SerializeField] private Rigidbody _rigidbody;
