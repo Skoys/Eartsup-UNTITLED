@@ -59,7 +59,7 @@ public class Ennemy : MonoBehaviour
         Teleport
     }
 
-    private void Awake()
+    private void Start()
     {
         _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         _playerScript = _playerTransform.GetComponent<Player_main>();
@@ -317,12 +317,20 @@ public class Ennemy : MonoBehaviour
         {
             if (!_ligthsList.Contains(oldLight))
             {
-                oldLight.GetComponent<Light>().enabled = true;
-                oldLight.transform.GetChild(0).gameObject.SetActive(true);
-                oldLight.GetComponent<Light>().color = _playerLightColor;
-                if (oldLight.name == "Flashlight")
+                Light oldLumi = oldLight.GetComponent<Light>();
+                if(oldLumi != null)
                 {
-                    oldLight.GetComponent<Light>().intensity = _playerLightIntensity;
+                    oldLumi.enabled = true;
+                    oldLight.transform.GetChild(0).gameObject.SetActive(true);
+                    oldLumi.color = _playerLightColor;
+                    if (oldLight.name == "Flashlight")
+                    {
+                        oldLumi.intensity = _playerLightIntensity;
+                    }
+                }
+                else
+                {
+                    oldLight.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
                 }
             }
         }
@@ -331,28 +339,39 @@ public class Ennemy : MonoBehaviour
         {
             Light lumi = light.GetComponent<Light>();
             float distance = Vector3.Distance(transform.position, light.transform.position);
+            bool random = Random.value > 0.5f;
 
-            if (distance <= _dyingLightsRange && light.name != "Flashlight")
+            if (lumi != null)
             {
-                lumi.enabled = false;
-                //light.transform.GetChild(0).gameObject.SetActive(false);
+                if (distance <= _dyingLightsRange && light.name != "Flashlight")
+                {
+                    lumi.enabled = false;
+                }
+                else if (distance <= _flickingLightsRange && light.name != "Flashlight")
+                {
+                   
+                    lumi.enabled = random;
+
+                }
+                else if (light.name == "Flashlight")
+                {
+                    float randomflash = Random.Range(_playerLightIntensity / 2, _playerLightIntensity);
+
+                    lumi.intensity = randomflash;
+                    lumi.color = Color.red;
+                }
             }
-            else if (distance <= _flickingLightsRange && light.name != "Flashlight")
+            else
             {
-                bool random = Random.value > 0.5f;
-
-                lumi.enabled = random;
-                light.transform.GetChild(0).gameObject.SetActive(random);
-                float clampedDistance = Mathf.Clamp(distance, _dyingLightsRange, _flickingLightsRange) / _flickingLightsRange - _dyingLightsRange / _flickingLightsRange;
-                //lumi.color = Color.Lerp(_playerLightColor, Color.red, 1 - clampedDistance);
-                
-            }
-            else if(light.name == "Flashlight")
-            {
-                float random = Random.Range(_playerLightIntensity / 2, _playerLightIntensity);
-
-                lumi.intensity = random;
-                lumi.color = Color.red;
+                if (distance <= _dyingLightsRange && light.name != "Flashlight")
+                {
+                    light.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+                }
+                else if(distance <= _flickingLightsRange && light.name != "Flashlight")
+                {
+                    if (random) { light.GetComponent<Renderer>().material.EnableKeyword("_EMISSION"); }
+                    else { light.GetComponent<Renderer>().material.DisableKeyword("_EMISSION"); }
+                }
             }
         }
 
