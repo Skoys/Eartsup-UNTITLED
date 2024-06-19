@@ -18,7 +18,7 @@ public class ButtonMenuScript : MonoBehaviour
     {
         _pressEnterTMP = _pressEnter.GetComponent<TextMeshProUGUI>();
         _pressEnterTMP.enabled = false;
-        Invoke(nameof(ShowPressStart), 2);
+        StartCoroutine(ShowPressStart());
     }
 
     private void Update()
@@ -29,8 +29,9 @@ public class ButtonMenuScript : MonoBehaviour
         }
     }
 
-    private void ShowPressStart()
+    private IEnumerator ShowPressStart()
     {
+        yield return new WaitForSeconds(2f);
         _canStart = true;
         _pressEnterTMP.enabled = true;
     }

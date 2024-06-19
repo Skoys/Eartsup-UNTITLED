@@ -794,6 +794,7 @@ MonoBehaviour:
   _currentBobbingTime: 0
   _startingYCamPos: 0
   _hasGun: 0
+  _gravity: 0
   _rigidbody: {fileID: 0}
   _virtualCameraCinemachine: {fileID: 0}
   _pauseMenu: {fileID: 0}
@@ -803,6 +804,7 @@ MonoBehaviour:
   _saveSystem: {fileID: 0}
   _chromaticAberration: {fileID: 0}
   _depthOfField: {fileID: 0}
+  _liftGammaGain: {fileID: 0}
 --- !u!114 &6843194330840418593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,6 +830,7 @@ MonoBehaviour:
   _minimapObjects: []
   _mapObjects: []
   _gameOverObjects: []
+  _animation: {fileID: 0}
 --- !u!65 &5745679760918173738
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1313,7 +1316,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 1
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: 542.5498, y: 109.56015, z: 152.72775}
 --- !u!1 &7846513809781656003
 GameObject:
   m_ObjectHideFlags: 0

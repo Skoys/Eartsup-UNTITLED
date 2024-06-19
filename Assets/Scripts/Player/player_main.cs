@@ -371,16 +371,6 @@ public class Player_main : MonoBehaviour
 
     public void Ending()
     {
-        StartCoroutine(WhiteVision());
-    }
-
-    private IEnumerator WhiteVision()
-    {
-        Debug.Log(_liftGammaGain.lift.value);
-        while(_liftGammaGain.lift.value.w < 2)
-        {
-            _liftGammaGain.lift.value = new Vector4(0,0,0, _liftGammaGain.lift.value.w + 1 / (Application.targetFrameRate / 2));
-            yield return null;
-        }
+        
     }
 }

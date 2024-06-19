@@ -129,6 +129,7 @@ public class Env_interact : MonoBehaviour
 
             case Utility.Gun:
                 _saveSystem._gotGun = true;
+                gameObject.GetComponent<Collider>().enabled = false;
                 break;
 
             case Utility.Ammo:

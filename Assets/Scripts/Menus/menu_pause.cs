@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Cinemachine.CinemachineOrbitalTransposer;
 
 public class PauseMenuScript : MonoBehaviour
 {
@@ -22,10 +23,11 @@ public class PauseMenuScript : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private Graphic[] _pauseObjects;
-    [SerializeField]private Graphic[] _settingsObjects;
+    [SerializeField] private Graphic[] _settingsObjects;
     [SerializeField] private Graphic[] _minimapObjects;
     [SerializeField] private Graphic[] _mapObjects;
     [SerializeField] private Graphic[] _gameOverObjects;
+    [SerializeField] private Animation _animation;
 
     void Awake()
     {
@@ -54,9 +56,9 @@ public class PauseMenuScript : MonoBehaviour
 
     public void EscapeKey()
     {
-        if (!_pause) 
-        { 
-            PauseGame(true); 
+        if (!_pause)
+        {
+            PauseGame(true);
             _currentMenu = 0;
             IsParameterShown(true, _pauseObjects);
             IsParameterShown(false, _settingsObjects);
@@ -67,8 +69,8 @@ public class PauseMenuScript : MonoBehaviour
         }
         else
         {
-            if (_currentMenu == 0) 
-            { 
+            if (_currentMenu == 0)
+            {
                 PauseGame(false);
                 IsParameterShown(false, _pauseObjects);
                 IsParameterShown(false, _settingsObjects);
@@ -151,9 +153,9 @@ public class PauseMenuScript : MonoBehaviour
 
     private void IsParameterShown(bool isShown, Graphic[] _parametersObjects)
     {
-        foreach (Graphic obj in _parametersObjects) 
-        { 
-            obj.gameObject.SetActive(isShown); 
+        foreach (Graphic obj in _parametersObjects)
+        {
+            obj.gameObject.SetActive(isShown);
             if (obj.name == "TabLight")
             {
                 obj.gameObject.SetActive(false);
@@ -170,6 +172,7 @@ public class PauseMenuScript : MonoBehaviour
         IsParameterShown(false, _mapObjects);
         IsParameterShown(false, _gameOverObjects);
         _crosshair.SetActive(false);
+        PauseGame(false);
     }
     private void LoadGame()
     {
@@ -183,19 +186,39 @@ public class PauseMenuScript : MonoBehaviour
 
     private void PauseGame(bool isPaused)
     {
-        if (isPaused) 
-        { 
+        if (isPaused)
+        {
             _pause = true;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             Time.timeScale = 0;
+             Debug.Log("Game  Paused");
         }
-        else 
-        { 
+        else
+        {
             _pause = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Time.timeScale = 1;
         }
+    }
+
+    public void Ending()
+    {
+        _pause = true;
+        IsParameterShown(false, _pauseObjects);
+        IsParameterShown(false, _settingsObjects);
+        IsParameterShown(true, _minimapObjects);
+        IsParameterShown(false, _mapObjects);
+        IsParameterShown(false, _gameOverObjects);
+        IsParameterShown(false, _minimapObjects);
+        _animation.Play("Ending Fade");
+        Invoke(nameof(ActivateCredits), 3f);
+    }
+
+    private void ActivateCredits()
+    {
+        _animation.Play("Credits");
+        Invoke(nameof(LoadMenu), 30f);
     }
 }
