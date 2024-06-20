@@ -18,6 +18,7 @@ public class Ennemy : MonoBehaviour
     [SerializeField] private float _timeBtwRays = 0.5f;
     [SerializeField] private int _ligthLayer = 9;
     [SerializeField] private float  _stunTime = 2;
+    [SerializeField] private GameObject _moveTo;
 
     [Header("Spheres Ranges")]
     [Range(1f, 100f)] public float _roamRange = 30;
@@ -48,6 +49,7 @@ public class Ennemy : MonoBehaviour
     [SerializeField] private Collider[] _oldLigthsList;
     [SerializeField] private Light _monsterLight;
     [SerializeField] private Settings _settingsScript;
+    [SerializeField] private Animator _animator;
 
     public enum MonsterState
     {
@@ -69,6 +71,7 @@ public class Ennemy : MonoBehaviour
         _playerLightColor = _playerTransform.GetComponentInChildren<Light>().color;
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponentInChildren<Animator>();
 
         _monsterLight = GetComponentInChildren<Light>();
         _monsterLight.color = Color.white;
@@ -202,6 +205,7 @@ public class Ennemy : MonoBehaviour
         }
         else
         {
+            _animator.SetBool("Attack", false);
             ChangeState(MonsterState.Teleport);
         }
     }
@@ -273,6 +277,7 @@ public class Ennemy : MonoBehaviour
 
         if (_currentLooseSec > _maxLooseSec)
         {
+            _animator.SetBool("Attack", false);
             ChangeState(MonsterState.Teleport);
             _currentLooseSec = 0;
             _seenPlayer = false;
@@ -288,6 +293,7 @@ public class Ennemy : MonoBehaviour
         if (CheckPlayer(Color.blue) && monsterState != MonsterState.Stun)
         {
             Debug.Log("Monster - Attacking");
+            _animator.SetBool("Attack", true);
             ChangeState(MonsterState.Attack);
             _navMeshAgent.speed = _attackSpeed;
             _seenPlayer = true;
@@ -301,10 +307,11 @@ public class Ennemy : MonoBehaviour
         if (Physics.CheckSphere(transform.position, 1.5f, _playerLayerMask) && monsterState != MonsterState.Stun)
         {
             Debug.Log("Monster - Kill Player");
-            _playerScript.IsKilled();
+            transform.position = new Vector3(999, 999, 999);
+            _animator.SetTrigger("Kill");
+            _playerScript.IsKilled(_moveTo);
             _navMeshAgent.enabled = false;
             monsterState = MonsterState.Stun;
-            transform.position = Vector3.zero;
         }
     }
 
@@ -405,10 +412,13 @@ public class Ennemy : MonoBehaviour
 
     public IEnumerator StunState()
     {
+        _animator.SetBool("Stun", true);
         ChangeState(MonsterState.Stun);
         _navMeshAgent.SetDestination(transform.position);
         _monsterLight.color = Color.red;
         yield return new WaitForSeconds(_stunTime);
+        _animator.SetBool("Stun", false);
+        _animator.SetBool("Attack", false);
         ChangeState(MonsterState.Focus);
         _monsterLight.color = Color.white;
     }

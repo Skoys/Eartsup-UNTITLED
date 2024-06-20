@@ -321,8 +321,23 @@ public class Player_main : MonoBehaviour
         Invoke(nameof(StopNoise), 2);
     }
 
-    public void IsKilled()
+    public void IsKilled(GameObject moveTo)
     {
+        transform.position = moveTo.transform.position;
+        moveToward = moveTo.transform.position;
+        StartCoroutine(GameOver());
+    }
+
+    private IEnumerator GameOver()
+    {
+        isInCinematic = true;
+        
+        GameObject deathTemp = new GameObject();
+        deathTemp.transform.position = _ennemyScript.gameObject.transform.position;
+        deathTemp.transform.position = new Vector3(deathTemp.transform.position.x, deathTemp.transform.position.y + 1.8f, deathTemp.transform.position.z);
+        _virtualCameraCinemachine.LookAt = deathTemp.transform;
+
+        yield return new WaitForSeconds(2f);
         _pauseMenu.GameOver();
     }
 
@@ -368,9 +383,4 @@ public class Player_main : MonoBehaviour
         }
     }
 
-
-    public void Ending()
-    {
-        
-    }
 }
