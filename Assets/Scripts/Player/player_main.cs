@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
+using UnityEngine.Experimental.Video;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.Profiling;
@@ -11,6 +12,7 @@ using UnityEngine.Rendering;
 
 //using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Video;
 using Color = System.Drawing.Color;
 
 public class Player_main : MonoBehaviour
@@ -66,6 +68,7 @@ public class Player_main : MonoBehaviour
     [SerializeField] private Ennemy _ennemyScript;
     [SerializeField] private GunScript _gunScript;
     [SerializeField] private SaveSystem _saveSystem;
+    [SerializeField] private Settings _settingsScript;
 
     [Header("Debug GV Profiles - Don't assign anything here")]
     [SerializeField] private ChromaticAberration _chromaticAberration;
@@ -84,6 +87,8 @@ public class Player_main : MonoBehaviour
         _startingYCamPos = _virtualCameraGameObject.transform.localPosition.y;
 
         _gunScript = _gun.GetComponent<GunScript>();
+
+        _settingsScript = Settings.instance;
 
         if (_globalVolume.profile.TryGet(out ChromaticAberration chromaticAberration))
         {
@@ -330,14 +335,37 @@ public class Player_main : MonoBehaviour
 
     private IEnumerator GameOver()
     {
-        isInCinematic = true;
-        
-        GameObject deathTemp = new GameObject();
-        deathTemp.transform.position = _ennemyScript.gameObject.transform.position;
-        deathTemp.transform.position = new Vector3(deathTemp.transform.position.x, deathTemp.transform.position.y + 1.8f, deathTemp.transform.position.z);
-        _virtualCameraCinemachine.LookAt = deathTemp.transform;
+        if (!_settingsScript.funMode)
+        {
+            CameraNoise();
+            isInCinematic = true;
+            Light[] lights = gameObject.GetComponentsInChildren<Light>();
+            foreach(Light light in lights)
+            {
+                light.enabled = false;
+            }
+
+            GameObject deathTemp = new GameObject();
+            deathTemp.transform.position = _ennemyScript.gameObject.transform.position;
+            deathTemp.transform.position = new Vector3(deathTemp.transform.position.x, deathTemp.transform.position.y + 1.6f, deathTemp.transform.position.z);
+            _virtualCameraCinemachine.LookAt = deathTemp.transform;
+        }
+        else
+        {
+            VideoPlayer video = gameObject.GetComponentInChildren<VideoPlayer>();
+            video.enabled = true;
+            _pauseMenu.GetAllAsset(false);
+            _chromaticAberration.intensity.value = 0;
+            video.Play();
+        }
 
         yield return new WaitForSeconds(2f);
+        if (_settingsScript.funMode) 
+        {
+            VideoPlayer video = gameObject.GetComponentInChildren<VideoPlayer>();
+            video.enabled = false; 
+        }
+        transform.position = new Vector3(-999, -999, -999);
         _pauseMenu.GameOver();
     }
 

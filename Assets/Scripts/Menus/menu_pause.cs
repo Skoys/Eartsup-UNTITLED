@@ -142,6 +142,14 @@ public class PauseMenuScript : MonoBehaviour
         _currentMenu = 2;
         PauseGame(true);
     }
+    public void GetAllAsset(bool areEnabled)
+    {
+        IsParameterShown(areEnabled, _pauseObjects);
+        IsParameterShown(areEnabled, _settingsObjects);
+        IsParameterShown(areEnabled, _minimapObjects);
+        IsParameterShown(areEnabled, _mapObjects);
+        IsParameterShown(areEnabled, _gameOverObjects);
+    }
     public void GameOverRetryClick()
     {
         LoadGame();

@@ -308,6 +308,7 @@ public class Ennemy : MonoBehaviour
         {
             Debug.Log("Monster - Kill Player");
             transform.position = new Vector3(999, 999, 999);
+            transform.rotation = new Quaternion(0, 0, 0, 0);
             _animator.SetTrigger("Kill");
             _playerScript.IsKilled(_moveTo);
             _navMeshAgent.enabled = false;

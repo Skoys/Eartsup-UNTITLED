@@ -47,8 +47,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
-  m_Intensity: 10
-  m_Range: 25
+  m_Intensity: 20
+  m_Range: 30
   m_SpotAngle: 106.01623
   m_InnerSpotAngle: 65.83962
   m_CookieSize: 10
@@ -188,8 +188,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.7303321, g: 0.7584905, b: 0.62253463, a: 1}
-  m_Intensity: 15
-  m_Range: 21.4
+  m_Intensity: 50
+  m_Range: 30
   m_SpotAngle: 54.127678
   m_InnerSpotAngle: 49.121635
   m_CookieSize: 10
@@ -197,7 +197,7 @@ Light:
     m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -496,6 +496,7 @@ GameObject:
   - component: {fileID: 7687116509024440555}
   - component: {fileID: 6843194330840418593}
   - component: {fileID: 5745679760918173738}
+  - component: {fileID: 3353163654095690881}
   m_Layer: 1
   m_Name: Player
   m_TagString: Player
@@ -518,6 +519,7 @@ Transform:
   m_Children:
   - {fileID: 7828529977196838847}
   - {fileID: 1169624644882636501}
+  - {fileID: 1208388401030243220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4174732033125914614
@@ -564,7 +566,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.45
   m_Height: 1.8
@@ -802,6 +804,7 @@ MonoBehaviour:
   _ennemyScript: {fileID: 0}
   _gunScript: {fileID: 0}
   _saveSystem: {fileID: 0}
+  _settingsScript: {fileID: 0}
   _chromaticAberration: {fileID: 0}
   _depthOfField: {fileID: 0}
   _liftGammaGain: {fileID: 0}
@@ -838,7 +841,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083920309434674871}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 821a6e9411e0350439e6810d141b9ca6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -852,6 +855,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.03, z: 0.25}
   m_Center: {x: 0, y: -0.9174152, z: 0}
+--- !u!65 &3353163654095690881
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083920309434674871}
+  m_Material: {fileID: 13400000, guid: 2b4d6ccc214da3f41b58d20e50a9679c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8, y: 1.77, z: 0.8}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3997289130395391766
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,7 +921,7 @@ GameObject:
   - component: {fileID: 6947835189723972338}
   - component: {fileID: 300509310555507185}
   m_Layer: 1
-  m_Name: Weapon VirtualCam
+  m_Name: Weapon Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -929,7 +953,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -937,7 +961,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -955,7 +979,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 64
@@ -985,9 +1009,9 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1014,6 +1038,74 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &5010608907232571654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1208388401030243220}
+  - component: {fileID: 4398043029201625907}
+  m_Layer: 0
+  m_Name: Markiplier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1208388401030243220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010608907232571654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 994, y: 998.1, z: 1006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5642495991330870696}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!328 &4398043029201625907
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010608907232571654}
+  m_Enabled: 0
+  m_VideoClip: {fileID: 32900000, guid: b9fb1a70f1e0906448fa16d8b1667422, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 1
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 00
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 0
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
 --- !u!1 &6074781905303084266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,8 +1529,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.7647059, g: 0.7411765, b: 0.69411767, a: 1}
-  m_Intensity: 20
-  m_Range: 10
+  m_Intensity: 35
+  m_Range: 30
   m_SpotAngle: 74.38729
   m_InnerSpotAngle: 31.245474
   m_CookieSize: 10
@@ -1541,7 +1633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5781365529591593128}
   m_Layer: 1
-  m_Name: Flashlight
+  m_Name: Flashlights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
