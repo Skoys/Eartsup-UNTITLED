@@ -74,15 +74,25 @@ public class Env_interact : MonoBehaviour
                     gameObject.GetComponent<Collider>().enabled = false;
                 }
                 break;
+
+            case Utility.Ammo:
+                if (_saveSystem.HasBeenInteracted(_idNumber))
+                {
+                    _animation.Play();
+                    _interacted = true;
+                    Interacted();
+                    gameObject.GetComponent<Collider>().enabled = false;
+                }
+                break;
         }
     }
 
     public void IsItMyTurn(int currentObjective)
     {
-        if(_visuals.Length == 0) {  return; }
+        if (_visuals.Length == 0) { return; }
         if (currentObjective + 1 == _saveNumber)
         {
-            foreach(GameObject visual in _visuals)
+            foreach (GameObject visual in _visuals)
             {
                 visual.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
             }
@@ -94,6 +104,21 @@ public class Env_interact : MonoBehaviour
                 visual.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
             }
         }
+
+        if (utility == Utility.Gun)
+        {
+            foreach (GameObject visual in _visuals)
+            {
+                visual.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            }
+        }
+        if (utility == Utility.Ammo)
+        {
+            foreach (GameObject visual in _visuals)
+            {
+                visual.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            }
+        }       
     }
 
     public Vector3 IsInteracted(bool ammunition)
@@ -133,6 +158,8 @@ public class Env_interact : MonoBehaviour
                 break;
 
             case Utility.Ammo:
+                _saveSystem.ObjectInteracted(_idNumber);
+                gameObject.GetComponent<Collider>().enabled = false;
                 break;
         }
     }
