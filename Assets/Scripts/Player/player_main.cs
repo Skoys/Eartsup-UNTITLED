@@ -205,7 +205,10 @@ public class Player_main : MonoBehaviour
 
             if (test_Interact.putPlayerInCinematic)
             {
-                moveToward = test_Interact.IsInteracted(_gunScript.hasBullet);
+                moveToward = test_Interact.IsInteracted(_gunScript.hasBullet, _hasGun);
+                if (moveToward == Vector3.zero) { return; }
+
+
                 moveToward = new Vector3(moveToward.x, transform.position.y, moveToward.z);
                 isInCinematic = true;
                 _virtualCameraCinemachine.LookAt = hit;

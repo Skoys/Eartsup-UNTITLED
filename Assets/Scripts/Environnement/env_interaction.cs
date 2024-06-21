@@ -121,9 +121,9 @@ public class Env_interact : MonoBehaviour
         }       
     }
 
-    public Vector3 IsInteracted(bool ammunition)
+    public Vector3 IsInteracted(bool ammunition, bool hasGun)
     {
-        if(utility == Utility.Ammo && ammunition)
+        if(utility == Utility.Ammo && (ammunition || !hasGun))
         {
             return Vector3.zero;
         }
