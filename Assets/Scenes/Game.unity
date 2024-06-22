@@ -1319,7 +1319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759c804275b1d6f4c9d8f1e11aac8084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentObjective: 4
+  _currentObjective: 0
   _interactedObjects: 
   _objectiveList: {fileID: 0}
   _canvas: {fileID: 708245319}
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954734467}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
@@ -1965,27 +1965,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 228856048}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1887543344 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3324957343039571854, guid: 1fd09fee9840d0742b8166cc0ae2a960,
+--- !u!114 &1887543346 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 739626432551268228, guid: 1fd09fee9840d0742b8166cc0ae2a960,
     type: 3}
   m_PrefabInstance: {fileID: 5647233561322625569}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1887543346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887543344}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d45274ddb916eca428f0efff10fc543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footsteps: {fileID: 2101576187}
-  flickingLights: {fileID: 702195269}
-  music: {fileID: 1152524271}
 --- !u!1 &2051175506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2565,13 +2556,7 @@ PrefabInstance:
       propertyPath: _objectiveText
       value: 
       objectReference: {fileID: 645996776}
-    - target: {fileID: 8278597276907075894, guid: bca64b8df2f83184eb3d07dc2a263db7,
-        type: 3}
-      propertyPath: m_Name
-      value: Screech
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6031367145252579806, guid: bca64b8df2f83184eb3d07dc2a263db7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2584,70 +2569,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 105719848616956924, guid: 1fd09fee9840d0742b8166cc0ae2a960,
+    - target: {fileID: 739626432551268228, guid: 1fd09fee9840d0742b8166cc0ae2a960,
         type: 3}
-      propertyPath: MaxDistance
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 105719848616956924, guid: 1fd09fee9840d0742b8166cc0ae2a960,
+      propertyPath: music
+      value: 
+      objectReference: {fileID: 1152524271}
+    - target: {fileID: 739626432551268228, guid: 1fd09fee9840d0742b8166cc0ae2a960,
         type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105719848616956924, guid: 1fd09fee9840d0742b8166cc0ae2a960,
+      propertyPath: footsteps
+      value: 
+      objectReference: {fileID: 2101576187}
+    - target: {fileID: 739626432551268228, guid: 1fd09fee9840d0742b8166cc0ae2a960,
         type: 3}
-      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644871495612574813, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: MaxDistance
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644871495612574813, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644871495612574813, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: flickingLights
+      value: 
+      objectReference: {fileID: 702195269}
     - target: {fileID: 3324957343039571854, guid: 1fd09fee9840d0742b8166cc0ae2a960,
         type: 3}
       propertyPath: m_Name
       value: =AUDIO=
-      objectReference: {fileID: 0}
-    - target: {fileID: 3359666402869706553, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: MaxDistance
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3359666402869706553, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3359666402869706553, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7363472880995702652, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: MaxDistance
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 7363472880995702652, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7363472880995702652, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8922220377990039776, guid: 1fd09fee9840d0742b8166cc0ae2a960,
         type: 3}
@@ -2702,11 +2642,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3324957343039571854, guid: 1fd09fee9840d0742b8166cc0ae2a960,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1887543346}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fd09fee9840d0742b8166cc0ae2a960, type: 3}
 --- !u!1001 &5713608209782452594
 PrefabInstance:
