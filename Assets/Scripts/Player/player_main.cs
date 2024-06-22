@@ -217,6 +217,7 @@ public class Player_main : MonoBehaviour
                 moveToward = test_Interact.IsInteracted(_gunScript.hasBullet, _hasGun);
                 if (moveToward == Vector3.zero) { return; }
 
+                test_Interact.gameObject.GetComponent<AudioSource>().Play();
 
                 moveToward = new Vector3(moveToward.x, transform.position.y, moveToward.z);
                 isInCinematic = true;

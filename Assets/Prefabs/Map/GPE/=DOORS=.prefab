@@ -1054,9 +1054,10 @@ AudioSource:
   m_GameObject: {fileID: 5985714399039063401}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: -5102226152260906116, guid: 77c6b244df38cef40ad410b5600d3499,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 0f5689bf8fa0a144e94822a702b2e473, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1065,8 +1066,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 13
-  MaxDistance: 500
+  MinDistance: 1
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -1101,7 +1102,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1284,9 +1285,10 @@ AudioSource:
   m_GameObject: {fileID: 6646672584383247774}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: -5102226152260906116, guid: 77c6b244df38cef40ad410b5600d3499,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: c1f9b4915b6c33449bd89160191041fb, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1295,8 +1297,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 13
-  MaxDistance: 500
+  MinDistance: 2
+  MaxDistance: 40
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -1331,7 +1333,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1452,9 +1454,10 @@ AudioSource:
   m_GameObject: {fileID: 6791121712891115966}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: -5102226152260906116, guid: 77c6b244df38cef40ad410b5600d3499,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: c1f9b4915b6c33449bd89160191041fb, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1463,8 +1466,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 13
-  MaxDistance: 500
+  MinDistance: 2
+  MaxDistance: 40
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -1499,7 +1502,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2214,6 +2217,37 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: MinDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 89dda4ee6df6671488ff1a8d030b2029, type: 3}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5102226152260906116, guid: 77c6b244df38cef40ad410b5600d3499,
+        type: 2}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5890232721536236231, guid: cb21cb90ebd91c94c8715c3937cdd98c,
         type: 3}
       propertyPath: m_Enabled
@@ -2424,6 +2458,32 @@ PrefabInstance:
       propertyPath: _transformationSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: MinDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 89dda4ee6df6671488ff1a8d030b2029, type: 3}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5102226152260906116, guid: 77c6b244df38cef40ad410b5600d3499,
+        type: 2}
     - target: {fileID: 4330405928731264136, guid: 55923c9af8dc07c47bcc002793728461,
         type: 3}
       propertyPath: _light
@@ -2640,6 +2700,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5890232721536236231, guid: cb21cb90ebd91c94c8715c3937cdd98c,
         type: 3}
@@ -3051,6 +3116,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5260744043533066440, guid: cb21cb90ebd91c94c8715c3937cdd98c,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5379301407987600194, guid: cb21cb90ebd91c94c8715c3937cdd98c,
         type: 3}
