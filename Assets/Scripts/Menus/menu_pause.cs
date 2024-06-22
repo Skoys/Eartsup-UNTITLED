@@ -8,6 +8,7 @@ using static Cinemachine.CinemachineOrbitalTransposer;
 public class PauseMenuScript : MonoBehaviour
 {
     private bool _pause = false;
+    public bool _ending = false;
     private int _currentMenu = 0;
 
     [SerializeField] private GameObject _pauseScreen;
@@ -56,7 +57,7 @@ public class PauseMenuScript : MonoBehaviour
 
     public void EscapeKey()
     {
-        if (!_pause)
+        if (!_pause && !_ending)
         {
             PauseGame(true);
             _currentMenu = 0;
@@ -214,6 +215,8 @@ public class PauseMenuScript : MonoBehaviour
     public void Ending()
     {
         _pause = true;
+        _ending = true;
+        _currentMenu = 4;
         IsParameterShown(false, _pauseObjects);
         IsParameterShown(false, _settingsObjects);
         IsParameterShown(true, _minimapObjects);
@@ -221,12 +224,12 @@ public class PauseMenuScript : MonoBehaviour
         IsParameterShown(false, _gameOverObjects);
         IsParameterShown(false, _minimapObjects);
         _animation.Play("Ending Fade");
-        Invoke(nameof(ActivateCredits), 3f);
+        Invoke(nameof(ActivateCredits), 2f);
     }
 
     private void ActivateCredits()
     {
         _animation.Play("Credits");
-        Invoke(nameof(LoadMenu), 30f);
+        Invoke(nameof(LoadMenu), 55f);
     }
 }

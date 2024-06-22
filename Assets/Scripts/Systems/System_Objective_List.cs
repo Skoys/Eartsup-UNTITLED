@@ -38,7 +38,7 @@ public class Objective_List : MonoBehaviour
     {
         string objectiveName = GetCurrentObjectiveName();
 
-        _objectiveText.SetText( objectiveName + "\n{0} / {1}",
+        _objectiveText.SetText( objectiveName + "    {0} / {1}",
                 _currentObjectiveProgression,
                 _maxObjectiveProgression
                 );

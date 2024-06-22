@@ -9,7 +9,7 @@ public class GunScript : MonoBehaviour
 {
     [Header("Variables")]
     public bool discoverGun = false;
-    public bool hasBullet = true;
+    public bool hasBullet = false;
 
     [Header("VFXs & others")]
     public VisualEffect muzzleVFX;
@@ -29,7 +29,6 @@ public class GunScript : MonoBehaviour
     public void DiscoverGun()
     {
         animator.SetBool("discoverGun", true);
-        animator.SetBool("munition", true);
     }
 
     public void GetAmmo()

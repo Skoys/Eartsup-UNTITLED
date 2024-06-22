@@ -19,6 +19,7 @@ public class Ennemy : MonoBehaviour
     [SerializeField] private int _ligthLayer = 9;
     [SerializeField] private float  _stunTime = 2;
     [SerializeField] private GameObject _moveTo;
+    [SerializeField] private SoundGestion monsterSounds;
 
     [Header("Spheres Ranges")]
     [Range(1f, 100f)] public float _roamRange = 30;
@@ -259,6 +260,7 @@ public class Ennemy : MonoBehaviour
 
     private void ChangeState(MonsterState state)
     {
+        monsterSounds.ActivateAudio(monsterSounds.music, false);
         monsterState = state;
     }
 
@@ -295,6 +297,7 @@ public class Ennemy : MonoBehaviour
             Debug.Log("Monster - Attacking");
             _animator.SetBool("Attack", true);
             ChangeState(MonsterState.Attack);
+            monsterSounds.ActivateAudio(monsterSounds.music, true);
             _navMeshAgent.speed = _attackSpeed;
             _seenPlayer = true;
             _playerScript.isBeingChased = true;
@@ -334,6 +337,7 @@ public class Ennemy : MonoBehaviour
                     if (oldLight.name == "Flashlight")
                     {
                         oldLumi.intensity = _playerLightIntensity;
+                        monsterSounds.VolumeAudio(monsterSounds.flickingLights, 0f);
                     }
                 }
                 else
@@ -363,6 +367,14 @@ public class Ennemy : MonoBehaviour
                 }
                 else if (light.name == "Flashlight")
                 {
+                    if(distance <= _dyingLightsRange)
+                    {
+                        monsterSounds.VolumeAudio(monsterSounds.flickingLights, 0f);
+                    }
+                    else if(distance <= _flickingLightsRange)
+                    {
+                        monsterSounds.VolumeAudio(monsterSounds.flickingLights, 1f);
+                    }
                     float randomflash = Random.Range(_playerLightIntensity / 2, _playerLightIntensity);
 
                     lumi.intensity = randomflash;

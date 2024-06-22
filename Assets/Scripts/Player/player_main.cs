@@ -35,6 +35,7 @@ public class Player_main : MonoBehaviour
     [SerializeField] private Volume _globalVolume;
     [SerializeField] private GameObject _virtualCameraGameObject;
     [SerializeField] private GameObject _gun;
+    [SerializeField] private SoundGestion playerSounds;
 
     [Header("Debug Variables - Don't assign anything here")]
     public bool gamePaused = false;
@@ -163,6 +164,14 @@ public class Player_main : MonoBehaviour
         if (isBeingChased)
         {
             _rigidbody.velocity *= _sprintMultiplier;
+        }
+        if (_rigidbody.velocity != new Vector3(0, _rigidbody.velocity.y, 0))
+        {
+            playerSounds.VolumeAudio(playerSounds.footsteps, 1f);
+        }
+        else
+        {
+            playerSounds.VolumeAudio(playerSounds.footsteps, 0f);
         }
     }
 
@@ -331,6 +340,8 @@ public class Player_main : MonoBehaviour
 
     public void IsKilled(GameObject moveTo)
     {
+        playerSounds.ActivateAudio(playerSounds.footsteps, false);
+        playerSounds.ActivateAudio(playerSounds.flickingLights, false);
         transform.position = moveTo.transform.position;
         moveToward = moveTo.transform.position;
         StartCoroutine(GameOver());

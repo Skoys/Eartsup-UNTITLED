@@ -504,7 +504,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.2093809, y: 1, z: 1.1900539}
-  m_Center: {x: -0.0074537992, y: 0, z: -0.09502697}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &795845315572592967
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,6 +3298,11 @@ PrefabInstance:
       objectReference: {fileID: 8245266555409983736}
     - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
         type: 3}
+      propertyPath: utility
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
+        type: 3}
       propertyPath: _idNumber
       value: 2
       objectReference: {fileID: 0}
@@ -3581,6 +3586,11 @@ PrefabInstance:
       propertyPath: _visual
       value: 
       objectReference: {fileID: 8173151861533158967}
+    - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
+        type: 3}
+      propertyPath: utility
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
         type: 3}
       propertyPath: _saveTag
@@ -3903,6 +3913,11 @@ PrefabInstance:
       propertyPath: _visual
       value: 
       objectReference: {fileID: 6352103065842412324}
+    - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
+        type: 3}
+      propertyPath: utility
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
         type: 3}
       propertyPath: _idNumber
@@ -4330,6 +4345,11 @@ PrefabInstance:
       propertyPath: _visual
       value: 
       objectReference: {fileID: 2578904786167537969}
+    - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
+        type: 3}
+      propertyPath: utility
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
         type: 3}
       propertyPath: _saveTag
@@ -4919,6 +4939,11 @@ PrefabInstance:
       propertyPath: _visual
       value: 
       objectReference: {fileID: 3864288806243019868}
+    - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
+        type: 3}
+      propertyPath: utility
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4844352217508785215, guid: 19edddc7cad6b54468b77c694c818c91,
         type: 3}
       propertyPath: _visuals.Array.size
