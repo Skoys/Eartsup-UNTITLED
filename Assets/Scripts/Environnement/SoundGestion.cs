@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class SoundGestion : MonoBehaviour
 {
+    [Header("Player")]
     public AudioSource footsteps;
     public AudioSource flickingLights;
     public AudioSource music;
+
+    [Header("Monster")]
+    public AudioSource screech;
+    public AudioSource funScreech;
+    public AudioSource teleportation;
+    public AudioSource randomSound;
+    public AudioSource funRandomSound;
 
     public void ActivateAudio(AudioSource audioSource, bool activate)
     {

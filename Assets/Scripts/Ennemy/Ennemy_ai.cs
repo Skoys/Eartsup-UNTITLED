@@ -143,6 +143,8 @@ public class Ennemy : MonoBehaviour
         {
             Debug.Log("Monster - Starting");
             _navMeshAgent.speed = _speed;
+            if (_settingsScript.funMode) { monsterSounds.ActivateAudio(monsterSounds.funRandomSound, true); }
+            else { monsterSounds.ActivateAudio(monsterSounds.randomSound, true); }
             ChangeState(MonsterState.Teleport);
         }
     }
@@ -249,6 +251,7 @@ public class Ennemy : MonoBehaviour
 
         if (distanceToPlayer > _playerSafeRange && _maxRange > distanceToPlayer)
         {
+            monsterSounds.ActivateAudio(monsterSounds.teleportation, true);
             Debug.Log("Monster - Focussing");
             _navMeshAgent.Warp(hit.position);
 
@@ -298,6 +301,9 @@ public class Ennemy : MonoBehaviour
             _animator.SetBool("Attack", true);
             ChangeState(MonsterState.Attack);
             monsterSounds.ActivateAudio(monsterSounds.music, true);
+            if (_settingsScript.funMode) { monsterSounds.ActivateAudio(monsterSounds.funScreech, true); }
+            else { monsterSounds.ActivateAudio(monsterSounds.screech, true); }
+            
             _navMeshAgent.speed = _attackSpeed;
             _seenPlayer = true;
             _playerScript.isBeingChased = true;
@@ -316,6 +322,9 @@ public class Ennemy : MonoBehaviour
             _playerScript.IsKilled(_moveTo);
             _navMeshAgent.enabled = false;
             monsterState = MonsterState.Stun;
+            monsterSounds.ActivateAudio(monsterSounds.randomSound, false);
+            monsterSounds.ActivateAudio(monsterSounds.funRandomSound, false);
+            monsterSounds.ActivateAudio(monsterSounds.music, false);
         }
     }
 
