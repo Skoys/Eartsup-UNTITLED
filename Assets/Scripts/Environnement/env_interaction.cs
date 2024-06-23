@@ -147,7 +147,7 @@ public class Env_interact : MonoBehaviour
         switch (utility)
         {
             case Utility.Door:
-                _saveSystem.ObjectInteracted(_idNumber);
+                _saveSystem.ObjectInteracted(_idNumber, true);
                 gameObject.GetComponent<Collider>().enabled = false;
                 foreach (Env_door door in _isAffecting) { door.ButtonBeenInteracted(); }
                 break;
@@ -158,7 +158,7 @@ public class Env_interact : MonoBehaviour
                 break;
 
             case Utility.Ammo:
-                _saveSystem.ObjectInteracted(_idNumber);
+                _saveSystem.ObjectInteracted(_idNumber, false);
                 gameObject.GetComponent<Collider>().enabled = false;
                 break;
         }

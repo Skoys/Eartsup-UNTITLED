@@ -18,8 +18,7 @@ using Color = System.Drawing.Color;
 public class Player_main : MonoBehaviour
 {
     [Header("Player Variables")]
-    [SerializeField, Range(0.01f, 10f)] private float _xSensitivity = 1f;
-    [SerializeField, Range(0.01f, 10f)] private float _ySensitivity = 1f;
+    [Range(0.01f, 10f)] public float _Sensitivity = 1f;
     [Range(1, 100)] public int _speed = 20;
     [Range(1f, 5f)] public float _sprintMultiplier = 2f;
     [SerializeField] private float _interactionDist;
@@ -150,8 +149,8 @@ public class Player_main : MonoBehaviour
 
         _pressingMenu = player_Inputs.menu;
 
-        _cameraRotation.x = player_Inputs.cam.x * _xSensitivity;
-        _cameraRotation.y = player_Inputs.cam.y * _ySensitivity;
+        _cameraRotation.x = player_Inputs.cam.x * _Sensitivity;
+        _cameraRotation.y = player_Inputs.cam.y * _Sensitivity;
 
         _currentBobbingTime = _nextMove == Vector2.zero ? 0 : _currentBobbingTime + _bobbingSpeed * Time.deltaTime;
     }

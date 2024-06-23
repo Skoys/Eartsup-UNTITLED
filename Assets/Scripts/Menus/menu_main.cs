@@ -21,6 +21,13 @@ public class MainMenuScriptt : MonoBehaviour
     [SerializeField] private string _buttonMenu;
 
     [SerializeField] private Settings _settingsScript;
+    [SerializeField] private SoundGestion sound;
+
+    [Header ("Sliders")]
+    [SerializeField] private Slider _masterVolume;
+    [SerializeField] private Slider _musicVolume;
+    [SerializeField] private Slider _ambianceVolume;
+    [SerializeField] private Slider _effectVolume;
 
     void Start()
     {
@@ -38,6 +45,15 @@ public class MainMenuScriptt : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+
+        _masterVolume.value = 0f;
+        _masterVolume.onValueChanged.AddListener(MasterVolume);
+        _musicVolume.value = 0f;
+        _musicVolume.onValueChanged.AddListener(MusicVolume);
+        _ambianceVolume.value = 0f;
+        _ambianceVolume.onValueChanged.AddListener(AmbianceVolume);
+        _effectVolume.value = -15f;
+        _effectVolume.onValueChanged.AddListener(EffectVolume);
 
         SetSettings();
     }
@@ -57,7 +73,8 @@ public class MainMenuScriptt : MonoBehaviour
     private void Update()
     {
         if (menuSlide == 0 && Input.anyKey) 
-        { 
+        {
+            sound.ActivateAudio(sound.uiSwoosh, true);
             menuSlide = 1;
             IsStartShown(false);
             IsMainShown(true);
@@ -67,6 +84,7 @@ public class MainMenuScriptt : MonoBehaviour
 
     public void mainStartClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsStartShown(false);
         IsMainShown(false);
         IsParametersShown(false);
@@ -74,6 +92,7 @@ public class MainMenuScriptt : MonoBehaviour
     }
     public void mainContinueClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsStartShown(false);
         IsMainShown(false);
         IsParametersShown(false);
@@ -81,12 +100,14 @@ public class MainMenuScriptt : MonoBehaviour
     }
     public void mainSettingsClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsStartShown(false);
         IsMainShown(false);
         IsParametersShown(true);
     }
     public void mainExitClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsStartShown(false);
         IsMainShown(false);
         IsParametersShown(false);
@@ -95,6 +116,7 @@ public class MainMenuScriptt : MonoBehaviour
 
     public void parametersFunModeClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         _settingsScript.funMode = !_settingsScript.funMode;
         foreach (Graphic obj in settingsObjects)
         {
@@ -107,6 +129,7 @@ public class MainMenuScriptt : MonoBehaviour
 
     public void parametersReturnClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsStartShown(false);
         IsMainShown(true);
         IsParametersShown(false);
@@ -139,5 +162,27 @@ public class MainMenuScriptt : MonoBehaviour
     private void QuitGame()
     {
         Application.Quit();
+    }
+
+
+    private void MasterVolume(float newValue)
+    {
+        _settingsScript._masterVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Master", newValue);
+    }
+    private void MusicVolume(float newValue)
+    {
+        _settingsScript._musicVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Music", newValue);
+    }
+    private void AmbianceVolume(float newValue)
+    {
+        _settingsScript._ambianceVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Ambiance", newValue);
+    }
+    private void EffectVolume(float newValue)
+    {
+        _settingsScript._effectsVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Effects", newValue);
     }
 }

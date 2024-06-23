@@ -9,6 +9,7 @@ public class Env_door : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] private int _interactionsLeft = 1;
     [SerializeField] private bool _rumble = true;
+    [SerializeField] private bool _sound = true;
     [SerializeField] private int _saveNumber = 0;
 
     [Header("Optionnal Objects")]
@@ -45,7 +46,7 @@ public class Env_door : MonoBehaviour
             _light.color = Color.green; 
         }
 
-        if (_audioSource != null)
+        if (_audioSource != null && _sound)
         {
             _audioSource.Play();
         }

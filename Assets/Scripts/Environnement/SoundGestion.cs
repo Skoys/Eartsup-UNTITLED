@@ -14,6 +14,7 @@ public class SoundGestion : MonoBehaviour
     public AudioSource funScreech;
     public AudioSource teleportation;
     public AudioSource stun;
+    public AudioSource death;
     public AudioSource randomSound;
     public AudioSource funRandomSound;
 
@@ -22,6 +23,8 @@ public class SoundGestion : MonoBehaviour
     public AudioSource freightElevator;
     public AudioSource ending;
     public AudioSource funEnding;
+    public AudioSource uiClick;
+    public AudioSource uiSwoosh;
 
     public void ActivateAudio(AudioSource audioSource, bool activate)
     {

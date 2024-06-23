@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,8 +20,16 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField] private GameObject _crosshair;
 
     [SerializeField] private Player_main _player;
+    [SerializeField] private SoundGestion sound;
 
     [SerializeField] private string _menuSceneName;
+
+    [Header("Sliders")]
+    [SerializeField] private Slider _masterVolume;
+    [SerializeField] private Slider _musicVolume;
+    [SerializeField] private Slider _ambianceVolume;
+    [SerializeField] private Slider _effectVolume;
+    [SerializeField] private Slider _sensitivity;
 
     [Header("Debug")]
     [SerializeField] private Graphic[] _pauseObjects;
@@ -29,8 +38,9 @@ public class PauseMenuScript : MonoBehaviour
     [SerializeField] private Graphic[] _mapObjects;
     [SerializeField] private Graphic[] _gameOverObjects;
     [SerializeField] private Animation _animation;
+    [SerializeField] private Settings _settingsScript;
 
-    void Awake()
+    void Start()
     {
         _pause = false;
 
@@ -41,6 +51,7 @@ public class PauseMenuScript : MonoBehaviour
         _gameOverObjects = _gameOverScreen.GetComponentsInChildren<Graphic>();
 
         _player = gameObject.GetComponent<Player_main>();
+        _settingsScript = Settings.instance;
 
         IsParameterShown(false, _pauseObjects);
         IsParameterShown(false, _settingsObjects);
@@ -53,6 +64,18 @@ public class PauseMenuScript : MonoBehaviour
 
         GameObject[] Respawns = GameObject.FindGameObjectsWithTag(gameObject.tag);
         if (Respawns.Length > 1) { Destroy(gameObject); }
+
+        _masterVolume.value = _settingsScript._masterVolume;
+        _masterVolume.onValueChanged.AddListener(MasterVolume);
+        _musicVolume.value = _settingsScript._musicVolume;
+        _musicVolume.onValueChanged.AddListener(MusicVolume);
+        _ambianceVolume.value = _settingsScript._ambianceVolume;
+        _ambianceVolume.onValueChanged.AddListener(AmbianceVolume);
+        _effectVolume.value = _settingsScript._effectsVolume;
+        _effectVolume.onValueChanged.AddListener(EffectVolume);
+
+        _sensitivity.value = _settingsScript._sensitivity;
+        _sensitivity.onValueChanged.AddListener(Sensitivity);
     }
 
     public void EscapeKey()
@@ -106,6 +129,7 @@ public class PauseMenuScript : MonoBehaviour
 
     public void PauseResumeClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsParameterShown(false, _pauseObjects);
         IsParameterShown(false, _settingsObjects);
         IsParameterShown(true, _minimapObjects);
@@ -115,6 +139,7 @@ public class PauseMenuScript : MonoBehaviour
     }
     public void PauseSettingsClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsParameterShown(false, _pauseObjects);
         IsParameterShown(true, _settingsObjects);
         IsParameterShown(false, _minimapObjects);
@@ -123,10 +148,12 @@ public class PauseMenuScript : MonoBehaviour
     }
     public void PauseMainMenuClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         LoadMenu();
     }
     public void SettingsResumeClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         IsParameterShown(true, _pauseObjects);
         IsParameterShown(false, _settingsObjects);
         IsParameterShown(false, _minimapObjects);
@@ -153,10 +180,12 @@ public class PauseMenuScript : MonoBehaviour
     }
     public void GameOverRetryClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         LoadGame();
     }
     public void GameOverMenuClick()
     {
+        sound.ActivateAudio(sound.uiClick, true);
         LoadMenu();
     }
 
@@ -231,5 +260,32 @@ public class PauseMenuScript : MonoBehaviour
     {
         _animation.Play("Credits");
         Invoke(nameof(LoadMenu), 60f);
+    }
+
+    private void MasterVolume(float newValue)
+    {
+        _settingsScript._masterVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Master", newValue);
+    }
+    private void MusicVolume(float newValue)
+    {
+        _settingsScript._musicVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Music", newValue);
+    }
+    private void AmbianceVolume(float newValue)
+    {
+        _settingsScript._ambianceVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Ambiance", newValue);
+    }
+    private void EffectVolume(float newValue)
+    {
+        _settingsScript._effectsVolume = newValue;
+        _settingsScript.audioMixer.SetFloat("Effects", newValue);
+    }
+    private void Sensitivity(float newValue)
+    {
+        _settingsScript._sensitivity = newValue;
+        _player._Sensitivity = newValue;
+        _sensitivity.GetComponentInChildren<TextMeshProUGUI>().SetText(Mathf.Round(newValue * 100f) / 100f + " SENSITIVITY ");
     }
 }

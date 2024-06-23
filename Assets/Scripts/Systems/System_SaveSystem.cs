@@ -64,9 +64,11 @@ public class SaveSystem : MonoBehaviour
         return _interactedObjects.Contains(id);
     }
 
-    public void ObjectInteracted(int id)
+    public void ObjectInteracted(int id, bool accept)
     {
         _interactedObjects.Add( id);
+        if (!accept) { return; }
+
         _objectiveList.GetComponent<Objective_List>().ChangeProgression();
     }
 

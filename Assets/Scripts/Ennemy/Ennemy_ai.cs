@@ -243,6 +243,9 @@ public class Ennemy : MonoBehaviour
 
     private void TeleportState()
     {
+        _currentLooseSec = 0;
+        _seenPlayer = false;
+        _playerScript.isBeingChased = false;
         Vector3 tpTo = Random.insideUnitSphere * _roamRange + _playerTransform.position;
 
         NavMeshHit hit;
@@ -325,6 +328,9 @@ public class Ennemy : MonoBehaviour
             monsterSounds.ActivateAudio(monsterSounds.randomSound, false);
             monsterSounds.ActivateAudio(monsterSounds.funRandomSound, false);
             monsterSounds.ActivateAudio(monsterSounds.music, false);
+            monsterSounds.ActivateAudio(monsterSounds.screech, false);
+            monsterSounds.ActivateAudio(monsterSounds.funScreech, false);
+            if (!_settingsScript.funMode) { monsterSounds.ActivateAudio(monsterSounds.death, true); }
         }
     }
 
@@ -443,6 +449,9 @@ public class Ennemy : MonoBehaviour
         _animator.SetBool("Stun", false);
         _animator.SetBool("Attack", false);
         ChangeState(MonsterState.Focus);
+        _currentLooseSec = 0;
+        _seenPlayer = false;
+        _playerScript.isBeingChased = false;
         _monsterLight.color = Color.white;
     }
 
