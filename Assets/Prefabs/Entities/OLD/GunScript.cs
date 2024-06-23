@@ -44,6 +44,8 @@ public class GunScript : MonoBehaviour
         animator.SetBool("munition", false);
         animator.SetBool("haveGun", true);
 
+        audioSource.Play();
+
         GameObject bullet = Instantiate(PREFAB_bullet);
         bullet.transform.position = gameObject.transform.position;
         bullet.transform.rotation = gameObject.transform.rotation;

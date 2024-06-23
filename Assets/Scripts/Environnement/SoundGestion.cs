@@ -13,8 +13,15 @@ public class SoundGestion : MonoBehaviour
     public AudioSource screech;
     public AudioSource funScreech;
     public AudioSource teleportation;
+    public AudioSource stun;
     public AudioSource randomSound;
     public AudioSource funRandomSound;
+
+    [Header("Misc")]
+    public AudioSource generator;
+    public AudioSource freightElevator;
+    public AudioSource ending;
+    public AudioSource funEnding;
 
     public void ActivateAudio(AudioSource audioSource, bool activate)
     {

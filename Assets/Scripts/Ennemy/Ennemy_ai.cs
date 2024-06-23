@@ -434,6 +434,7 @@ public class Ennemy : MonoBehaviour
 
     public IEnumerator StunState()
     {
+        monsterSounds.ActivateAudio(monsterSounds.stun, true);
         _animator.SetBool("Stun", true);
         ChangeState(MonsterState.Stun);
         _navMeshAgent.SetDestination(transform.position);

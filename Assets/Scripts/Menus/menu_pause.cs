@@ -230,6 +230,6 @@ public class PauseMenuScript : MonoBehaviour
     private void ActivateCredits()
     {
         _animation.Play("Credits");
-        Invoke(nameof(LoadMenu), 55f);
+        Invoke(nameof(LoadMenu), 60f);
     }
 }

@@ -217,8 +217,12 @@ public class Player_main : MonoBehaviour
                 moveToward = test_Interact.IsInteracted(_gunScript.hasBullet, _hasGun);
                 if (moveToward == Vector3.zero) { return; }
 
-                test_Interact.gameObject.GetComponent<AudioSource>().Play();
-
+                AudioSource audio = test_Interact.gameObject.GetComponent<AudioSource>();
+                if(audio != null)
+                {
+                    audio.Play();
+                }
+                
                 moveToward = new Vector3(moveToward.x, transform.position.y, moveToward.z);
                 isInCinematic = true;
                 _virtualCameraCinemachine.LookAt = hit;
@@ -239,7 +243,6 @@ public class Player_main : MonoBehaviour
                     _gunScript.GetAmmo();
                     break;
             }
-
         }
         else if (_hasInteracted && !_isInteracting)
         {
